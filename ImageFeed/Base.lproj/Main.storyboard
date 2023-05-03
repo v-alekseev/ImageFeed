@@ -17,24 +17,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sXN-U4-YkU">
-                                <rect key="frame" x="20" y="44" width="374" height="818"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sXN-U4-YkU">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <color key="sectionIndexBackgroundColor" name="YP Black"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="245" id="dWa-pm-YYi" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="374" height="245"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="245"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dWa-pm-YYi" id="3j9-LE-yVd">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="245"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="245"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lEv-uR-TXw" userLabel="ImageCell">
-                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="245"/>
+                                                    <rect key="frame" x="16" y="4" width="382" height="237"/>
                                                     <color key="backgroundColor" name="YP Black"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOE-bB-X4E" userLabel="LikeButtom">
-                                                    <rect key="frame" x="330" y="0.0" width="44" height="44"/>
+                                                    <rect key="frame" x="354" y="4" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="FGb-1F-VIS"/>
                                                         <constraint firstAttribute="width" constant="44" id="uyM-B2-Htv"/>
@@ -44,7 +50,7 @@
                                                     <state key="normal" image="favorits_active"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 202" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAz-Fy-hA4" userLabel="LabelImageDate">
-                                                    <rect key="frame" x="8" y="219" width="94" height="18"/>
+                                                    <rect key="frame" x="24" y="215" width="94" height="18"/>
                                                     <color key="tintColor" name="YP White"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="8dW-9p-48g"/>
@@ -55,24 +61,18 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="lEv-uR-TXw" secondAttribute="trailing" id="Cum-fj-Vby"/>
-                                                <constraint firstAttribute="bottom" secondItem="lEv-uR-TXw" secondAttribute="bottom" id="Nch-B4-lza"/>
+                                                <constraint firstAttribute="trailing" secondItem="lEv-uR-TXw" secondAttribute="trailing" constant="16" id="Cum-fj-Vby"/>
+                                                <constraint firstAttribute="bottom" secondItem="lEv-uR-TXw" secondAttribute="bottom" constant="4" id="Nch-B4-lza"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EAz-Fy-hA4" secondAttribute="trailing" constant="20" symbolic="YES" id="Tot-fI-gWO"/>
-                                                <constraint firstItem="lEv-uR-TXw" firstAttribute="leading" secondItem="3j9-LE-yVd" secondAttribute="leading" id="cAT-Pg-ayx"/>
-                                                <constraint firstAttribute="trailing" secondItem="tOE-bB-X4E" secondAttribute="trailing" id="cKy-O0-yn1"/>
-                                                <constraint firstItem="tOE-bB-X4E" firstAttribute="top" secondItem="3j9-LE-yVd" secondAttribute="top" id="cPA-3t-TJ9"/>
-                                                <constraint firstAttribute="bottom" secondItem="EAz-Fy-hA4" secondAttribute="bottom" constant="8" id="eFf-vT-HcN"/>
-                                                <constraint firstItem="EAz-Fy-hA4" firstAttribute="leading" secondItem="3j9-LE-yVd" secondAttribute="leading" constant="8" id="r6x-zT-TYt"/>
-                                                <constraint firstItem="lEv-uR-TXw" firstAttribute="top" secondItem="3j9-LE-yVd" secondAttribute="top" id="sGb-CJ-FLd"/>
+                                                <constraint firstItem="lEv-uR-TXw" firstAttribute="leading" secondItem="3j9-LE-yVd" secondAttribute="leading" constant="16" id="cAT-Pg-ayx"/>
+                                                <constraint firstItem="lEv-uR-TXw" firstAttribute="trailing" secondItem="tOE-bB-X4E" secondAttribute="trailing" id="cKy-O0-yn1"/>
+                                                <constraint firstItem="tOE-bB-X4E" firstAttribute="top" secondItem="lEv-uR-TXw" secondAttribute="top" id="cPA-3t-TJ9"/>
+                                                <constraint firstItem="lEv-uR-TXw" firstAttribute="bottom" secondItem="EAz-Fy-hA4" secondAttribute="bottom" constant="8" id="eFf-vT-HcN"/>
+                                                <constraint firstItem="EAz-Fy-hA4" firstAttribute="leading" secondItem="lEv-uR-TXw" secondAttribute="leading" constant="8" id="r6x-zT-TYt"/>
+                                                <constraint firstItem="lEv-uR-TXw" firstAttribute="top" secondItem="3j9-LE-yVd" secondAttribute="top" constant="4" id="sGb-CJ-FLd"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Black"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="16"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="imageCellList" destination="lEv-uR-TXw" id="k04-4X-2kI"/>
                                             <outlet property="labelDate" destination="EAz-Fy-hA4" id="PAU-su-kF9"/>
@@ -85,10 +85,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="sXN-U4-YkU" secondAttribute="bottom" id="8BA-Uu-lKr"/>
-                            <constraint firstItem="sXN-U4-YkU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="E8x-Tj-cVD"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="sXN-U4-YkU" secondAttribute="trailing" id="IZf-fZ-8M9"/>
-                            <constraint firstItem="sXN-U4-YkU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="nC4-J9-X9g"/>
+                            <constraint firstItem="sXN-U4-YkU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="53a-05-pGS"/>
+                            <constraint firstAttribute="bottom" secondItem="sXN-U4-YkU" secondAttribute="bottom" id="8BA-Uu-lKr"/>
+                            <constraint firstAttribute="trailing" secondItem="sXN-U4-YkU" secondAttribute="trailing" id="gU2-oS-rmg"/>
+                            <constraint firstItem="sXN-U4-YkU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="nC4-J9-X9g"/>
                         </constraints>
                     </view>
                     <connections>

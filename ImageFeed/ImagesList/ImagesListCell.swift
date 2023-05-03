@@ -10,6 +10,9 @@ import UIKit
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
+    static let favoritsActive = "favorits_active"
+    static let favoritsNoactive = "favorits_noactive"
+    static let defaultHeight = CGFloat(500)
     
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var imageCellList: UIImageView!

@@ -12,7 +12,7 @@ class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    private let defaultHeight = CGFloat(500)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,18 +22,9 @@ class ImagesListViewController: UIViewController {
         tableView.dataSource = self
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        //tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
         
         // это регистрации ячейки программно
         // tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
-        
-//  Это пока оставим + subview для градиента сделать надо
-//        let gradient = CAGradientLayer()
-//        gradient.frame = self.view.bounds
-//        gradient.colors = [UIColor.ypBlack]
-//        self.view.layer.addSublayer(gradient)
-        
-        
     }
     
     // это нужно для белого шрифта в статус бар
@@ -51,8 +42,6 @@ class ImagesListViewController: UIViewController {
 
 }
 
-
-
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -62,19 +51,14 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return self.defaultHeight
+            return ImagesListCell.defaultHeight
         }
         
-        // todo visibleSize ???
-        let k = tableView.visibleSize.width/image.size.width
+        // todo что лучше использовать tableView.bounds.width или tableView.visibleSize.width
+        let k = (tableView.visibleSize.width - 16 - 16)/image.size.width
 
-        return CGFloat(image.size.height*k)
-//        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-//        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-//        let imageWidth = image.size.width
-//        let scale = imageViewWidth / imageWidth
-//        let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
-//        return cellHeight
+        return CGFloat(image.size.height*k + 4 + 4 )
+    
     }
 }
 
@@ -107,12 +91,8 @@ extension ImagesListViewController: UITableViewDataSource {
     
         cell.imageCellList.image = image
         cell.labelDate.text = dateFormatter.string(from: Date())
-        cell.likeButton.imageView?.image  = indexPath.row % 2 == 0 ? UIImage(named: "favorits_active") : UIImage(named: "favorits_noactive")
+        cell.likeButton.imageView?.image  = indexPath.row % 2 == 0 ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
  
-        cell.layer.borderWidth = 4
-        cell.layer.borderColor = UIColor.ypBlack.cgColor
-
     }
-    
     
 }
