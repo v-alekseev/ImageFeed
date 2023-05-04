@@ -54,10 +54,11 @@ extension ImagesListViewController: UITableViewDelegate {
             return ImagesListCell.defaultHeight
         }
         
+        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         // todo что лучше использовать tableView.bounds.width или tableView.visibleSize.width
-        let k = (tableView.visibleSize.width - 16 - 16)/image.size.width
+        let k = (tableView.visibleSize.width - imageInsets.left - imageInsets.right)/image.size.width
 
-        return CGFloat(image.size.height*k + 4 + 4 )
+        return CGFloat(image.size.height*k + imageInsets.top + imageInsets.bottom )
     
     }
 }
