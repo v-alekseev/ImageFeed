@@ -7,10 +7,7 @@
 
 import UIKit
 
-final class ImagesListViewController: UIViewController {
-    
-    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
-        
+class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
@@ -42,17 +39,6 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowSingleImageSegueIdentifier { // 1
-            let destinationViewController = segue.destination as! SingleImageViewController // 2
-            let indexPath = sender as! IndexPath // 3
-            let image = UIImage(named: photosName[indexPath.row]) //
-            //_ = destinationViewController.view // CRASH FIXED !?4
-            destinationViewController.image = image // 5
-        } else {
-            super.prepare(for: segue, sender: sender) // 6
-        }
-    }
 
 }
 
@@ -60,11 +46,7 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
-        
     }
-    
-    
     // устанавливаем высоту ячейки
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
@@ -116,5 +98,3 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
 }
-
-
