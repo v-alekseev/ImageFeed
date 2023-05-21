@@ -58,20 +58,15 @@ final class ProfileViewController: UIViewController {
         
         guard let profileImageView = profileImageView else { return nil}
         
-        let button = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!,
-                                           target: self,
-                                           action: #selector(self.buttonExitTapped))
+        let button = UIButton()
+        button.setImage(UIImage(named: "exit"), for: .normal)
+        button.addTarget(self, action: #selector(self.buttonExitTapped), for: .touchUpInside)
 
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .ypRed
         view.addSubview(button)
         button.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24).isActive = true
-        
-        //Можено еще так, но в задачиии было использовать UIButton.systemButton. Оставим этот код тут.
-        //let button = UIButton()
-        //button.setImage(UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
-        //button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         
         return button
     }
