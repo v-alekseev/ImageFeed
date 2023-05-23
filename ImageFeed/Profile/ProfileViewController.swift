@@ -18,9 +18,8 @@ final class ProfileViewController: UIViewController {
     private var descriptionLabel: UILabel?
     
     
-    @IBAction func buttonExitTapped(_ sender: UIButton) {
+    @IBAction private func buttonExitTapped(_ sender: UIButton) {
         print("Button tapped!")
-        
     }
     
     override func viewDidLoad() {
@@ -31,7 +30,6 @@ final class ProfileViewController: UIViewController {
         nameLabel = addNamelabel()
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
-        
     }
     
 

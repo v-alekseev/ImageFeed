@@ -11,10 +11,10 @@ import UIKit
 
 final class SingleImageViewController: UIViewController {
 
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var imageView: UIImageView!
     
-    @IBAction func didTapBackButton(_ sender: UIButton) {
+    @IBAction private func didTapBackButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -26,7 +26,7 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
-    @IBAction func didTapShareButton(_ sender: UIButton) {
+    @IBAction private func didTapShareButton(_ sender: UIButton) {
         
         let items = [image]
         let sharing = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
