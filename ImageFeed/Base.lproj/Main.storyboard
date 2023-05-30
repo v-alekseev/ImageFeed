@@ -163,7 +163,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JbG-gd-D5q" userLabel="WebView">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="101" width="414" height="795"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -182,21 +182,29 @@
                                     <action selector="didTapBackButton2:" destination="M5D-p3-emb" eventType="touchUpInside" id="Avi-Ig-MpG"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="RZG-RX-Tsw" userLabel="ProgressView">
+                                <rect key="frame" x="0.0" y="97" width="414" height="4"/>
+                                <color key="tintColor" name="YP Black"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Wrn-OX-RfI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="RZG-RX-Tsw" secondAttribute="trailing" id="0Nn-OW-Nv0"/>
                             <constraint firstItem="3zF-KM-teE" firstAttribute="leading" secondItem="iev-se-5se" secondAttribute="leading" constant="9" id="IYy-nk-k6r"/>
+                            <constraint firstItem="RZG-RX-Tsw" firstAttribute="top" secondItem="3zF-KM-teE" secondAttribute="bottom" id="M4f-D8-wGT"/>
                             <constraint firstAttribute="trailing" secondItem="JbG-gd-D5q" secondAttribute="trailing" id="Rcl-jO-SbC"/>
                             <constraint firstAttribute="bottom" secondItem="JbG-gd-D5q" secondAttribute="bottom" id="aMb-oc-UHb"/>
-                            <constraint firstItem="JbG-gd-D5q" firstAttribute="top" secondItem="iev-se-5se" secondAttribute="top" id="kSF-qZ-M5Z"/>
+                            <constraint firstItem="RZG-RX-Tsw" firstAttribute="leading" secondItem="iev-se-5se" secondAttribute="leading" id="ghd-GF-elF"/>
+                            <constraint firstItem="JbG-gd-D5q" firstAttribute="top" secondItem="RZG-RX-Tsw" secondAttribute="bottom" id="kSF-qZ-M5Z"/>
                             <constraint firstItem="JbG-gd-D5q" firstAttribute="leading" secondItem="iev-se-5se" secondAttribute="leading" id="tlu-Hd-t5S"/>
                             <constraint firstItem="3zF-KM-teE" firstAttribute="top" secondItem="Wrn-OX-RfI" secondAttribute="top" constant="29" id="zOa-Sr-Gl8"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="glc-PJ-gD0"/>
                     <connections>
-                        <outlet property="webView2" destination="JbG-gd-D5q" id="WdY-Yk-mQa"/>
+                        <outlet property="progressView" destination="RZG-RX-Tsw" id="j9d-gw-mpd"/>
+                        <outlet property="webView" destination="JbG-gd-D5q" id="WdY-Yk-mQa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iec-iv-Awd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
