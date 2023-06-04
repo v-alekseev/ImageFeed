@@ -72,6 +72,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 case .success(let token):
                     // Сохраним токен в UserDefaults
                     self.oAuth2TokenStorage.token = token
+                    print("\(#function)(\(#line)) token = \(token)")
                     // переключимся на flow библиотеки изображений
                     self.switchToTabBarController()
                     

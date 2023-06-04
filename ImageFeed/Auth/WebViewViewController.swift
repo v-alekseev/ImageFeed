@@ -20,7 +20,7 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var webView: WKWebView!
     
-    private weak var webViewDelegate: WebViewViewControllerDelegate?  = nil
+    weak var webViewDelegate: WebViewViewControllerDelegate?  = nil
     
     private var oAuth2Service = OAuth2Service()
     
@@ -30,8 +30,6 @@ final class WebViewViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        print("\(#function)(\(#line)) addObserver()")
         webView.addObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
@@ -41,9 +39,7 @@ final class WebViewViewController: UIViewController {
     
     override  func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        print("\(#function)(\(#line)) removeObserver()")
-        
+
         webView.removeObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
