@@ -21,16 +21,4 @@ final class OAuth2TokenStorage {
         }
     }
     
-    var code: String {
-        
-        get {
-            guard let value = UserDefaults.standard.string(forKey: "code") else {return ""}
-            return value
-        }
-        
-        set(newValue) {
-            UserDefaults.standard.set(newValue, forKey: "code")
-        }
-    }
-    
 }

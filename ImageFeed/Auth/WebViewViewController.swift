@@ -20,9 +20,9 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var webView: WKWebView!
     
-    weak var webViewDelegate: WebViewViewControllerDelegate?  = nil
+    private weak var webViewDelegate: WebViewViewControllerDelegate?  = nil
     
-    var oAuth2Service = OAuth2Service()
+    private var oAuth2Service = OAuth2Service()
     
     @IBAction func didTapBackButton2(_ sender: UIButton) {
         webViewDelegate?.webViewViewControllerDidCancel(self)
@@ -37,8 +37,6 @@ final class WebViewViewController: UIViewController {
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
             options: .new,
             context: nil)
-        
-
     }
     
     override  func viewDidDisappear(_ animated: Bool) {
@@ -50,23 +48,16 @@ final class WebViewViewController: UIViewController {
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
             context: nil)
-        
-
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       print("\(#function)(\(#line)) ")
-        
         webView.navigationDelegate = self  // WKNavigationDelegate
-        
-        let url = oAuth2Service.createCodeRequestURL()
         
         updateProgress()
         
-        let request = URLRequest(url: url)
-        print("\(#function)(\(#line)) request = \(String(describing: request.url))")
+        let request = URLRequest(url: oAuth2Service.createCodeRequestURL())
         webView.load(request)
         
     }
@@ -85,7 +76,6 @@ final class WebViewViewController: UIViewController {
     }
 
     private func updateProgress() {
-        print("\(#function)(\(#line)) webView.estimatedProgress = \(webView.estimatedProgress)")
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
@@ -100,16 +90,11 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        print("\(#function)(\(#line)) webView()")
-        print("\(#function)(\(#line)) navigationAction.request.url = \(String(describing: navigationAction.request.url))")
-        
          if let code = code(from: navigationAction) {
-                print("\(#function)(\(#line)) call delegate?.webViewViewController(\(code)")
                 webViewDelegate?.webViewViewController(self, didAuthenticateWithCode: code)
-                decisionHandler(.cancel) //3
+                decisionHandler(.cancel)
           } else {
-                print("\(#function)(\(#line)) call  decisionHandler(.allow)")
-                decisionHandler(.allow) //4
+                decisionHandler(.allow)
             }
     }
     

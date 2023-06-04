@@ -12,24 +12,14 @@ import UIKit
 final class SplashViewController: UIViewController {
     private let ShowImageListViewSegueIdentifier = "ShowImageListView"
     private let ShowAuthViewSegueIdentifier = "ShowAuthView"
+    
     private let oAuth2TokenStorage = OAuth2TokenStorage()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print("SplashViewController viewDidLoad")
+    private let oAuth2Service = OAuth2Service()
         
-        oAuth2TokenStorage.token = ""
-        print("\(#function)(\(#line)) oAuth2TokenStorage.token = \(oAuth2TokenStorage.token)")
-        print("\(#function)(\(#line)) oAuth2TokenStorage.code = \(oAuth2TokenStorage.code)")
-        
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        print("SplashViewController viewDidAppear")
-        if oAuth2TokenStorage.token == "" {
 
+        if oAuth2TokenStorage.token == "" {
             performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: "")
         } else {
             performSegue(withIdentifier: ShowImageListViewSegueIdentifier, sender: "")
@@ -42,40 +32,57 @@ final class SplashViewController: UIViewController {
             return .lightContent
         }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        switch segue.identifier {
-        case ShowImageListViewSegueIdentifier:
-            
-            let indexPath = sender as! String
-            print("SplashViewController prepare ShowImageListViewSegueIdentifier + \(indexPath)")
-        case ShowAuthViewSegueIdentifier:
-            //let destinationViewController = segue.destination as! AuthViewController // 2
-            //destinationViewController.delegate = self
-            
+        if segue.identifier == ShowAuthViewSegueIdentifier {
             // Доберёмся до первого контроллера в навигации. Мы помним, что в программировании отсчёт начинается с 0?
-             guard
-                 let navigationController = segue.destination as? UINavigationController,
-                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-                 //TODO переделать вызов navigationController.viewControllers.first
-             else { fatalError("Failed to prepare for \(ShowAuthViewSegueIdentifier)") }
+            guard
+                let navigationController = segue.destination as? UINavigationController,
+                let viewController = navigationController.viewControllers[0] as? AuthViewController
+                //TODO переделать вызов navigationController.viewControllers.first
+            else { fatalError("Failed to prepare for \(ShowAuthViewSegueIdentifier)") }
              
             viewController.delegate = self
             
-            
-            let indexPath = sender as! String
-            print("SplashViewController prepare ShowAuthViewSegueIdentifier + \(indexPath)")
-        default:
+        } else {
             super.prepare(for: segue, sender: sender)
         }
+    }
+    
+    private func switchToTabBarController() {
+        // Получаем экземпляр `Window` приложения
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+    
+        // Cоздаём экземпляр нужного контроллера из Storyboard с помощью ранее заданного идентификатора.
+        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+            .instantiateViewController(withIdentifier: "TabBarViewController")
+           
+        // Установим в `rootViewController` полученный контроллер
+        window.rootViewController = tabBarController
     }
     
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        print("SplashViewController/authViewController code = \(code)")
+        oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result {
+                case .success(let token):
+                    // Сохраним токен в UserDefaults
+                    self.oAuth2TokenStorage.token = token
+                    // переключимся на flow библиотеки изображений
+                    self.switchToTabBarController()
+                    
+                case .failure(let error):
+                    //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
+                    self.oAuth2TokenStorage.token = "" // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
+                    print("\(#function)(\(#line)) Error = \(error.localizedDescription)")
+                }
+                return
+            }
+        }
     }
     
     

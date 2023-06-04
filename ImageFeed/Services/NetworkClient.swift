@@ -27,19 +27,13 @@ struct NetworkClient: NetworkRouting {
             
             // Проверяем, пришла ли ошибка
             if let error = error {
-                print("!!! error = !!!")
                 handler(Result.failure(error))
                 return
             }
             
-            let response1 = response as? HTTPURLResponse
-            let rs = response1?.statusCode
-            print("\(#function)(\(#line)) statusCode = \(String(describing: rs))")
-            
             // Проверяем, что нам пришёл успешный код ответа
             if let response = response as? HTTPURLResponse,
                 response.statusCode < 200 || response.statusCode >= 300 {
-                print("!!! Status = \(response.statusCode)")
                 handler(Result.failure(NetworkError.codeError))
                 return
             }
@@ -50,8 +44,8 @@ struct NetworkClient: NetworkRouting {
                 return
             }
             
-            let str = String(decoding: data, as: UTF8.self)
-            print("Data = \(str)")
+            // пока оставим тут 
+            //print("Data = \(String(decoding: data, as: UTF8.self))")
             
             handler(Result.success(data))
         }
