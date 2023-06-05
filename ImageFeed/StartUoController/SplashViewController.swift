@@ -22,7 +22,7 @@ final class SplashViewController: UIViewController {
         if oAuth2TokenStorage.token == "" {
             performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: "")
         } else {
-            performSegue(withIdentifier: ShowImageListViewSegueIdentifier, sender: "")
+            self.switchToTabBarController()
         }
         
     }
@@ -41,7 +41,7 @@ final class SplashViewController: UIViewController {
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
                 //TODO переделать вызов navigationController.viewControllers.first
             else { fatalError("Failed to prepare for \(ShowAuthViewSegueIdentifier)") }
-             
+            
             viewController.delegate = self
             
         } else {
