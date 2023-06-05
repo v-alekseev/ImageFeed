@@ -13,7 +13,7 @@ protocol NetworkRouting {
 
 /// Отвечает за загрузку данных по URL
 struct NetworkClient: NetworkRouting {
-
+    
     private enum NetworkError: Error {
         case codeError
         case reciveDataError
@@ -22,7 +22,6 @@ struct NetworkClient: NetworkRouting {
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)
         
-        // непосредственно запрос к API IMDB
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             // Проверяем, пришла ли ошибка
@@ -33,7 +32,8 @@ struct NetworkClient: NetworkRouting {
             
             // Проверяем, что нам пришёл успешный код ответа
             if let response = response as? HTTPURLResponse,
-                response.statusCode < 200 || response.statusCode >= 300 {
+               response.statusCode < 200 || response.statusCode >= 300 {
+                
                 handler(Result.failure(NetworkError.codeError))
                 return
             }
@@ -44,7 +44,7 @@ struct NetworkClient: NetworkRouting {
                 return
             }
             
-            // пока оставим тут 
+            // пока оставим тут
             //print("Data = \(String(decoding: data, as: UTF8.self))")
             
             handler(Result.success(data))

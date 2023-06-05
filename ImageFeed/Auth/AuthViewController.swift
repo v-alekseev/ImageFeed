@@ -24,12 +24,12 @@ final class AuthViewController: UIViewController {
         if segue.identifier == ShowWebView {
             let destinationViewController = segue.destination as! WebViewViewController
             destinationViewController.webViewDelegate = self  // WebViewViewControllerDelegate
-           
+            
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
-
+    
 }
 
 extension AuthViewController:  WebViewViewControllerDelegate {

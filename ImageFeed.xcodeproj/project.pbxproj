@@ -115,6 +115,7 @@
 		8B4EA4A52A2B4CE60089FC39 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				8B4EA4AB2A2E0E8A0089FC39 /* OAuth */,
 				8B4EA4A62A2B4D610089FC39 /* NetworkClient.swift */,
 			);
 			path = Services;
@@ -128,13 +129,20 @@
 			path = StartUoController;
 			sourceTree = "<group>";
 		};
+		8B4EA4AB2A2E0E8A0089FC39 /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				8B4EA4A02A2944310089FC39 /* OAuth2TokenStorage.swift */,
+				8B4EA49E2A29407C0089FC39 /* OAuth2Service.swift */,
+			);
+			path = OAuth;
+			sourceTree = "<group>";
+		};
 		8B5E0EE52A238A3C00E22E7A /* Auth */ = {
 			isa = PBXGroup;
 			children = (
 				8B5E0EE62A238A4F00E22E7A /* AuthViewController.swift */,
 				8B5E0EE82A23943800E22E7A /* WebViewViewController.swift */,
-				8B4EA49E2A29407C0089FC39 /* OAuth2Service.swift */,
-				8B4EA4A02A2944310089FC39 /* OAuth2TokenStorage.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";

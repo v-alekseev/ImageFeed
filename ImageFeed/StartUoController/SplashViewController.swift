@@ -15,22 +15,23 @@ final class SplashViewController: UIViewController {
     
     private let oAuth2TokenStorage = OAuth2TokenStorage()
     private let oAuth2Service = OAuth2Service()
-        
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if oAuth2TokenStorage.token == "" {
-            performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: "")
-        } else {
+        
+        // Если токен получали ранее, то переходим в библиотеку изображений. Если нет, то на экран авторизации
+        if oAuth2TokenStorage.token != nil {
             self.switchToTabBarController()
+        } else {
+            performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: "")
         }
         
     }
     
     // это нужно для белого шрифта в статус бар
     override var preferredStatusBarStyle: UIStatusBarStyle {
-            return .lightContent
-        }
+        return .lightContent
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -38,8 +39,7 @@ final class SplashViewController: UIViewController {
             // Доберёмся до первого контроллера в навигации. Мы помним, что в программировании отсчёт начинается с 0?
             guard
                 let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-                //TODO переделать вызов navigationController.viewControllers.first
+                let viewController = navigationController.viewControllers.first as? AuthViewController
             else { fatalError("Failed to prepare for \(ShowAuthViewSegueIdentifier)") }
             
             viewController.delegate = self
@@ -52,11 +52,11 @@ final class SplashViewController: UIViewController {
     private func switchToTabBarController() {
         // Получаем экземпляр `Window` приложения
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-    
+        
         // Cоздаём экземпляр нужного контроллера из Storyboard с помощью ранее заданного идентификатора.
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
-           
+        
         // Установим в `rootViewController` полученный контроллер
         window.rootViewController = tabBarController
     }
