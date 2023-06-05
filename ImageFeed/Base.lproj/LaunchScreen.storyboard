@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="hq9-Cu-01X">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashScreenImage" translatesAutoresizingMaskIntoConstraints="NO" id="hq9-Cu-01X">
                                 <rect key="frame" x="169.5" y="414" width="75" height="78"/>
                             </imageView>
                         </subviews>
@@ -34,6 +34,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage" width="75" height="78"/>
+        <image name="SplashScreenImage" width="75" height="78"/>
     </resources>
 </document>
