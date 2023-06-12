@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+import ProgressHUD
+
 
 final class SplashViewController: UIViewController {
     private let ShowImageListViewSegueIdentifier = "ShowImageListView"
@@ -65,9 +67,14 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+        
+
+        ProgressHUD.show()
         oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
+                ProgressHUD.dismiss()
+                
                 switch result {
                 case .success(let token):
                     // Сохраним токен в UserDefaults
