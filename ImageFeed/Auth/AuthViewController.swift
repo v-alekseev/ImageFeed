@@ -16,12 +16,12 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     private let ShowWebView: String = "ShowWebView"
-    private let oAuth2Service: OAuth2Service = OAuth2Service()
     private var oAuth2TokenStorage = OAuth2TokenStorage()
     weak var delegate: AuthViewControllerDelegate? = nil
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowWebView {
+            // Переходим на ViewController для открытия WebView авторизации
             let destinationViewController = segue.destination as! WebViewViewController
             destinationViewController.webViewDelegate = self  // WebViewViewControllerDelegate
             
@@ -36,6 +36,8 @@ extension AuthViewController:  WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         // уведомляем  SplashViewController о том что получили Code
+        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+        
         delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
     

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkRouting {
-    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
+    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask?
 }
 
 /// Отвечает за загрузку данных по URL
@@ -19,11 +19,15 @@ struct NetworkClient: NetworkRouting {
         case reciveDataError
     }
     
-    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
+    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)  -> URLSessionDataTask? {
         let request = URLRequest(url: url)
+        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
         
+   
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
             
+       
             // Проверяем, пришла ли ошибка
             if let error = error {
                 handler(Result.failure(error))
@@ -51,6 +55,7 @@ struct NetworkClient: NetworkRouting {
         }
         
         task.resume()
+        return task
     }
 }
 

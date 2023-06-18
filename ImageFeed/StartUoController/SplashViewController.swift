@@ -70,26 +70,32 @@ extension SplashViewController: AuthViewControllerDelegate {
         
 
         ProgressHUD.show()
+        
+        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+        
         oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
-            DispatchQueue.main.async {
+           // DispatchQueue.main.async { // переводим обработчик в main очерез внутри fetchAuthToken
                 guard let self = self else { return }
                 ProgressHUD.dismiss()
+                // тут уже Thread.isMainThread = true (DispatchQueue.main.async)
+                print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+            
                 
                 switch result {
                 case .success(let token):
                     // Сохраним токен в UserDefaults
                     self.oAuth2TokenStorage.token = token
-                    print("\(#function)(\(#line)) token = \(token)")
+                    print("IMG \(#file)-\(#function)(\(#line)) token = \(token)")
                     // переключимся на flow библиотеки изображений
                     self.switchToTabBarController()
                     
                 case .failure(let error):
                     //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
                     self.oAuth2TokenStorage.token = "" // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
-                    print("\(#function)(\(#line)) Error = \(error.localizedDescription)")
+                    print("IMG \(#file)-\(#function)(\(#line)) Error = \(error.localizedDescription)")
                 }
                 return
-            }
+           // }
         }
     }
     

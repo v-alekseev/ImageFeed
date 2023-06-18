@@ -8,25 +8,61 @@
 import Foundation
 
 class OAuth2Service {
+// Кажется его нужно сделать Singleton раз мы тут проверяем code и task // хотя может быть проблема с тем что вызвали из разных потоков. Надо подумать
+//    static let shared = TestSinglton()
+//    private init() {
+//    }
     
-    let networkClient = NetworkClient()
+    private let networkClient = NetworkClient()
+    private var task: URLSessionDataTask?
+    private var lastCode: String?
+    
     
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+
+        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+        // 1 - проверяем что есть активный запрос task != nil
+        // 2 - проверяем code == lastCode
+        
+        print("IMG \(#file)-\(#function)(\(#line)) task = \(String(describing: task)); lastCode = \(lastCode); code = \(code)")
+        
+        // защита от повторного вызова функции fetchAuthToken
+        if lastCode == code { return }                      // тот же код пришел. Не делаем повторный запрос
+        task?.cancel()                                      // текущий запрс надо убить. (если он nil то функция не будет вызвана)
+
+        lastCode = code
         
         // делаем POST запрос для получения токена https://unsplash.com/oauth/token
         let authUrl = createAuthUrl(code: code)
         
-        networkClient.fetch(url: authUrl) { result in
+        task = networkClient.fetch(url: authUrl) { result in
+           
+            print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+            
+            //self.task = nil  // устанавливам признак того что таск завершен  //  //Thread.isMainThread = false тут !!!!!!!
+            
             switch result {
             case .success(let data):
                 do {
                     let authResponce = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    completion(Result.success(authResponce.access_token))
+                    DispatchQueue.main.async {
+                        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+                        self.task = nil
+                        completion(Result.success(authResponce.access_token))
+                    }
                 } catch {
-                    completion(Result.failure(error))
+                    DispatchQueue.main.async {
+                        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+                        self.task = nil
+                        completion(Result.failure(error))
+                    }
                 }
             case .failure(let error):
-                completion(Result.failure(error))
+                DispatchQueue.main.async {
+                    print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+                    self.task = nil
+                    completion(Result.failure(error))
+                }
             }
         }
     }
