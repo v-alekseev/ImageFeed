@@ -24,6 +24,9 @@
 		8B5E0EE72A238A4F00E22E7A /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E0EE62A238A4F00E22E7A /* AuthViewController.swift */; };
 		8B5E0EE92A23943800E22E7A /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E0EE82A23943800E22E7A /* WebViewViewController.swift */; };
 		8B77C8FA2A00011D00E09E6F /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77C8F92A00011D00E09E6F /* ImagesListCell.swift */; };
+		8B8E2A8B2A3F102200C6F6B3 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E2A8A2A3F102200C6F6B3 /* UIBlockingProgressHUD.swift */; };
+		8B8E2A8D2A3F123B00C6F6B3 /* ProfileService.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E2A8C2A3F123B00C6F6B3 /* ProfileService.swift.swift */; };
+		8B8E2A8F2A3F126A00C6F6B3 /* ProfileServiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E2A8E2A3F126A00C6F6B3 /* ProfileServiceModel.swift */; };
 		8BBD6B012A127A61005003C5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBD6B002A127A61005003C5 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +49,9 @@
 		8B5E0EE62A238A4F00E22E7A /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		8B5E0EE82A23943800E22E7A /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		8B77C8F92A00011D00E09E6F /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
+		8B8E2A8A2A3F102200C6F6B3 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
+		8B8E2A8C2A3F123B00C6F6B3 /* ProfileService.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift.swift; sourceTree = "<group>"; };
+		8B8E2A8E2A3F126A00C6F6B3 /* ProfileServiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceModel.swift; sourceTree = "<group>"; };
 		8BBD6B002A127A61005003C5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				8B4EA49C2A293FF40089FC39 /* OAuthTokenResponseBodyModel.swift */,
+				8B8E2A8E2A3F126A00C6F6B3 /* ProfileServiceModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -119,6 +126,8 @@
 			children = (
 				8B4EA4AB2A2E0E8A0089FC39 /* OAuth */,
 				8B4EA4A62A2B4D610089FC39 /* NetworkClient.swift */,
+				8B8E2A8A2A3F102200C6F6B3 /* UIBlockingProgressHUD.swift */,
+				8B8E2A8C2A3F123B00C6F6B3 /* ProfileService.swift.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -245,12 +254,15 @@
 			files = (
 				8B4EA4A12A2944310089FC39 /* OAuth2TokenStorage.swift in Sources */,
 				8B4EA49D2A293FF40089FC39 /* OAuthTokenResponseBodyModel.swift in Sources */,
+				8B8E2A8D2A3F123B00C6F6B3 /* ProfileService.swift.swift in Sources */,
 				8B4D406229FBC5BE00FD8CB0 /* AppDelegate.swift in Sources */,
 				8B77C8FA2A00011D00E09E6F /* ImagesListCell.swift in Sources */,
 				8BBD6B012A127A61005003C5 /* ProfileViewController.swift in Sources */,
+				8B8E2A8F2A3F126A00C6F6B3 /* ProfileServiceModel.swift in Sources */,
 				8B4EA4AA2A2BBE410089FC39 /* SplashViewController.swift in Sources */,
 				8B4EA49F2A29407C0089FC39 /* OAuth2Service.swift in Sources */,
 				8B24D31929FFD2FB00CAAAE0 /* ImagesListViewController.swift in Sources */,
+				8B8E2A8B2A3F102200C6F6B3 /* UIBlockingProgressHUD.swift in Sources */,
 				8B5E0EE72A238A4F00E22E7A /* AuthViewController.swift in Sources */,
 				8B5E0EE42A23652F00E22E7A /* Constants.swift in Sources */,
 				8B41763C2A14120300AC0711 /* SingleImageViewController.swift in Sources */,

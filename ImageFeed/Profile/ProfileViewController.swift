@@ -16,6 +16,8 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var idLabel: UILabel?
     private var descriptionLabel: UILabel?
+    private var profileService = ProfileService()
+    private var oAuth2TokenStorage = OAuth2TokenStorage()
     
     
     @IBAction private func buttonExitTapped(_ sender: UIButton) {
@@ -30,9 +32,30 @@ final class ProfileViewController: UIViewController {
         nameLabel = addNamelabel()
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
+        
+        profileService.fetchProfile(oAuth2TokenStorage.token ?? "") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+                print("IMG \(#file)-\(#function)(\(#line)) Profile = \(profile)")
+                self.updateScreenFields(profile: profile)
+                
+            case .failure(let error):
+                //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
+                print("IMG \(#file)-\(#function)(\(#line)) Error = \(error.localizedDescription)")
+            }
+            return
+        }
+        
     }
     
-
+    private func updateScreenFields(profile: Profile){
+        nameLabel?.text = profile.name
+        idLabel?.text = profile.loginName
+        descriptionLabel?.text = profile.bio
+    }
+    
     private func addProfileImage(_ image: UIImage?) -> UIImageView? {
         
         guard let image = image else { return nil}
@@ -47,7 +70,7 @@ final class ProfileViewController: UIViewController {
         profileView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         profileView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         profileView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-
+        
         
         return profileView
     }
@@ -59,7 +82,7 @@ final class ProfileViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "exit"), for: .normal)
         button.addTarget(self, action: #selector(self.buttonExitTapped), for: .touchUpInside)
-
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .ypRed
         view.addSubview(button)
@@ -110,12 +133,13 @@ final class ProfileViewController: UIViewController {
         label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 13.0)
         view.addSubview(label)
+        label.numberOfLines = 10
         label.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 8).isActive = true
         label.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor).isActive = true
         
         return label
     }
-
-
-
+    
+    
+    
 }

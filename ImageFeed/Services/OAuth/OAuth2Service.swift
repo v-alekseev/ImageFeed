@@ -33,9 +33,9 @@ class OAuth2Service {
         lastCode = code
         
         // делаем POST запрос для получения токена https://unsplash.com/oauth/token
-        let authUrl = createAuthUrl(code: code)
+        let authRequest = createAuthUrl(code: code)
         
-        task = networkClient.fetch(url: authUrl) { result in
+        task = networkClient.fetch(request: authRequest) { result in
            
             print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
             
@@ -67,7 +67,7 @@ class OAuth2Service {
         }
     }
     
-    private func createAuthUrl(code: String) -> URL {
+    private func createAuthUrl(code: String) -> URLRequest {
         
         let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/token"
         
@@ -80,10 +80,12 @@ class OAuth2Service {
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
         
-        return urlComponents.url!
+        let url = urlComponents.url!
+        
+        return URLRequest(url: url)
     }
     
-    func createCodeRequestURL() -> URL {
+    func createCodeRequestURL() -> URLRequest {
         let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
         
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
@@ -93,7 +95,10 @@ class OAuth2Service {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Consts.AccessScope)
         ]
-        return urlComponents.url!
+        
+        let url = urlComponents.url!
+        
+        return URLRequest(url: url)
     }
 }
 

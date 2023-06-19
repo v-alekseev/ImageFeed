@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkRouting {
-    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask?
+    func fetch(request: URLRequest, handler: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask?
 }
 
 /// Отвечает за загрузку данных по URL
@@ -19,10 +19,13 @@ struct NetworkClient: NetworkRouting {
         case reciveDataError
     }
     
-    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)  -> URLSessionDataTask? {
-        let request = URLRequest(url: url)
+    func fetch(request: URLRequest, handler: @escaping (Result<Data, Error>) -> Void)  -> URLSessionDataTask? {
+
         print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
         
+        print("IMG \request.allHTTPHeaderFields = \(request.allHTTPHeaderFields)")
+        print("IMG \request.debugDescription = \(request.debugDescription)")
+        print("IMG \request.debugDescription = \(request.url)")
    
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
@@ -34,10 +37,12 @@ struct NetworkClient: NetworkRouting {
                 return
             }
             
+           
             // Проверяем, что нам пришёл успешный код ответа
             if let response = response as? HTTPURLResponse,
                response.statusCode < 200 || response.statusCode >= 300 {
                 
+                print("IMG statusCode = \(response.statusCode)")
                 handler(Result.failure(NetworkError.codeError))
                 return
             }
@@ -48,8 +53,8 @@ struct NetworkClient: NetworkRouting {
                 return
             }
             
-            // пока оставим тут
-            //print("Data = \(String(decoding: data, as: UTF8.self))")
+            // пока оставим тут todo
+            print("IMG Data = \(String(decoding: data, as: UTF8.self))")
             
             handler(Result.success(data))
         }

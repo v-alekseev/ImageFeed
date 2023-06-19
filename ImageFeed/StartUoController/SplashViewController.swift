@@ -21,6 +21,7 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        print("IMG Token = \(String(describing: oAuth2TokenStorage.token))")
         // Если токен получали ранее, то переходим в библиотеку изображений. Если нет, то на экран авторизации
         if oAuth2TokenStorage.token != nil {
             self.switchToTabBarController()
@@ -69,14 +70,14 @@ extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         
 
-        ProgressHUD.show()
+        UIBlockingProgressHUD.show()
         
         print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
         
         oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
            // DispatchQueue.main.async { // переводим обработчик в main очерез внутри fetchAuthToken
                 guard let self = self else { return }
-                ProgressHUD.dismiss()
+                UIBlockingProgressHUD.dismiss()
                 // тут уже Thread.isMainThread = true (DispatchQueue.main.async)
                 print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
             
@@ -91,7 +92,8 @@ extension SplashViewController: AuthViewControllerDelegate {
                     
                 case .failure(let error):
                     //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
-                    self.oAuth2TokenStorage.token = "" // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
+                    self.oAuth2TokenStorage.token = nil // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
+                    print("IMG  self.oAuth2TokenStorage.token = nil")
                     print("IMG \(#file)-\(#function)(\(#line)) Error = \(error.localizedDescription)")
                 }
                 return

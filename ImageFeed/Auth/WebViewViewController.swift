@@ -53,8 +53,7 @@ final class WebViewViewController: UIViewController {
         
         updateProgress()
         
-        let request = URLRequest(url: oAuth2Service.createCodeRequestURL())
-        webView.load(request)
+        webView.load(oAuth2Service.createCodeRequestURL())
         
     }
     
