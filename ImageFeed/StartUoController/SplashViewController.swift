@@ -19,6 +19,7 @@ final class SplashViewController: UIViewController {
     private let oAuth2Service = OAuth2Service()
     
     private let profileService = ProfileService()
+    //private let profileImageService = ProfileImageService()
     
     private var profile = Profile.shared
     
@@ -97,9 +98,10 @@ final class SplashViewController: UIViewController {
             switch result {
             case .success(let profile):
                 // profile уже инициализирован. тут его обрабатывать не надо
+                self.fetchProfileImage(username: profile.username)
                 UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController() // переключимся на flow библиотеки изображений
-
+                
             case .failure:
                 UIBlockingProgressHUD.dismiss()
                 // TODO [Sprint 11] Показать ошибку
@@ -107,13 +109,26 @@ final class SplashViewController: UIViewController {
         }
         
     }
-    
-}
-
-extension SplashViewController: AuthViewControllerDelegate {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        UIBlockingProgressHUD.show()
-        self.fetchAuthToken(code: code)
+    private func fetchProfileImage(username: String) {
+        ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
+            //guard let self = self else { return }
+            
+            switch result {
+            case .success(let url):
+                print("IMG avatar url = \(url)")
+                break
+            case .failure(let error):
+                print("IMG Error loading. Error: \(error)")
+                break
+            }
+        }
+        
     }
-    
 }
+    extension SplashViewController: AuthViewControllerDelegate {
+        func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+            UIBlockingProgressHUD.show()
+            self.fetchAuthToken(code: code)
+        }
+        
+    }

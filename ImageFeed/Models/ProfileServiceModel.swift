@@ -23,6 +23,8 @@ struct ProfileResult: Codable {
 }
 
 
+
+
 // https://unsplash.com/documentation#current-user
 //{
 //  "id": "pXhwzz1JtQU",

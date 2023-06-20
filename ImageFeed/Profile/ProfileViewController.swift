@@ -16,8 +16,10 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var idLabel: UILabel?
     private var descriptionLabel: UILabel?
-//    private var profileService = ProfileService()
+    
     private var oAuth2TokenStorage = OAuth2TokenStorage()
+    
+    private var profileImageService =  ProfileImageService()
     
     private var profile = Profile.shared
     
@@ -25,6 +27,8 @@ final class ProfileViewController: UIViewController {
     @IBAction private func buttonExitTapped(_ sender: UIButton) {
         print("Button tapped!")
     }
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,9 +39,33 @@ final class ProfileViewController: UIViewController {
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
         
-        updateProfileDetails(profile: profile)        
+        
+        updateProfileDetails(profile: profile)
+        
+        profileImageServiceObserver = NotificationCenter.default    // 2
+            .addObserver(
+                forName: ProfileImageService.DidChangeNotification, // 3
+                object: nil,                                        // 4
+                queue: .main                                        // 5
+            ) { [weak self] _ in
+                print("IMG addObserver closer")
+                guard let self = self else { return }
+                self.updateAvatar()                                 // 6
+            }
+        
+        updateAvatar()
+        
     }
     
+    private func updateAvatar() {                                   // 8
+        print("IMG updateAvatar")
+        guard
+            let profileImageURL = profile.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+        print("IMG updateAvatar \(url)")
+    }
     
     private func updateProfileDetails(profile: Profile){
         nameLabel?.text = profile.name
