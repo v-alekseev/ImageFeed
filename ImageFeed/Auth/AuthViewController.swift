@@ -35,9 +35,7 @@ final class AuthViewController: UIViewController {
 extension AuthViewController:  WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        // уведомляем  SplashViewController о том что получили Code
-        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
-        
+        // уведомляем  SplashViewController о том что получили Code        
         delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
     

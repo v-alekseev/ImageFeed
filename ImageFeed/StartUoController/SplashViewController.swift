@@ -18,13 +18,19 @@ final class SplashViewController: UIViewController {
     private let oAuth2TokenStorage = OAuth2TokenStorage()
     private let oAuth2Service = OAuth2Service()
     
+    private let profileService = ProfileService()
+    
+    private var profile = Profile.shared
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         print("IMG Token = \(String(describing: oAuth2TokenStorage.token))")
         // Если токен получали ранее, то переходим в библиотеку изображений. Если нет, то на экран авторизации
-        if oAuth2TokenStorage.token != nil {
-            self.switchToTabBarController()
+        
+        if let token = oAuth2TokenStorage.token {
+            self.fetchProfile(token: token)
+            //self.switchToTabBarController()
         } else {
             performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: "")
         }
@@ -64,42 +70,50 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
     
+    
+    private func fetchAuthToken(code: String) {
+        
+        oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let token):
+                // Сохраним токен в UserDefaults
+                self.oAuth2TokenStorage.token = token
+                print("IMG \(#file)-\(#function)(\(#line)) token = \(token)")
+                
+                self.fetchProfile(token: token)
+                
+            case .failure(let error):
+                //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
+                self.oAuth2TokenStorage.token = nil // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
+            }
+        }
+    }
+    
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                // profile уже инициализирован. тут его обрабатывать не надо
+                UIBlockingProgressHUD.dismiss()
+                self.switchToTabBarController() // переключимся на flow библиотеки изображений
+
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                // TODO [Sprint 11] Показать ошибку
+            }
+        }
+        
+    }
+    
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        
-
         UIBlockingProgressHUD.show()
-        
-        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
-        
-        oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
-           // DispatchQueue.main.async { // переводим обработчик в main очерез внутри fetchAuthToken
-                guard let self = self else { return }
-                UIBlockingProgressHUD.dismiss()
-                // тут уже Thread.isMainThread = true (DispatchQueue.main.async)
-                print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
-            
-                
-                switch result {
-                case .success(let token):
-                    // Сохраним токен в UserDefaults
-                    self.oAuth2TokenStorage.token = token
-                    print("IMG \(#file)-\(#function)(\(#line)) token = \(token)")
-                    // переключимся на flow библиотеки изображений
-                    self.switchToTabBarController()
-                    
-                case .failure(let error):
-                    //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
-                    self.oAuth2TokenStorage.token = nil // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
-                    print("IMG  self.oAuth2TokenStorage.token = nil")
-                    print("IMG \(#file)-\(#function)(\(#line)) Error = \(error.localizedDescription)")
-                }
-                return
-           // }
-        }
+        self.fetchAuthToken(code: code)
     }
-    
     
 }

@@ -8,7 +8,9 @@
 import Foundation
 
 
-struct Profile{
+class Profile{
+    static let shared = Profile()
+    
     private var username: String
     private var first_name: String
     private var last_name: String
@@ -17,11 +19,19 @@ struct Profile{
     var loginName: String {"@" + name}
     var bio: String
     
-    init(data: ProfileResult){
-        self.init(username: data.userName, first_name: data.firsName, last_name: data.lastName, bio: data.bio)
+    private init() {
+        username = ""
+        first_name = ""
+        last_name = ""
+        bio = ""
+        self.setData(username: nil, first_name: nil, last_name: nil, bio: nil)
     }
     
-    init(username: String?, first_name: String?, last_name: String?, bio: String?){
+    func setData(data: ProfileResult){
+        self.setData(username: data.userName, first_name: data.firsName, last_name: data.lastName, bio: data.bio)
+    }
+    
+    func setData(username: String?, first_name: String?, last_name: String?, bio: String?){
         self.username = username ?? "No information" // тут обязательно выводить загрушку т.к. имя пользователя должно быть обязательно
         self.first_name = first_name ?? ""  // тут значение по умолчанию пустая сторока, т.к. пользователь может просто не указать имя
         self.last_name = last_name ?? "" // тут значение по умолчанию пустая сторока, т.к. пользователь может просто не указать фамилию
@@ -33,38 +43,37 @@ final class ProfileService {
     
     private let networkClient = NetworkClient()
     private var task: URLSessionDataTask?
+    private var profile = Profile.shared
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+        
         // защита от повторного вызова функции fetchProfile
         task?.cancel()                                      // текущий запрс надо убить. (если он nil то функция не будет вызвана)
         
         // делаем POST запрос для получения токена https://unsplash.com/oauth/token
         let profileRequest = createGetProfileRequest(with: token)
         
-        task = networkClient.fetch(request: profileRequest) { result in
+        task = networkClient.fetch(request: profileRequest) { [weak self] result in
             
-            print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
+            guard let self = self else { return }
             
             switch result {
             case .success(let data):
                 do {
                     let profileResponce = try JSONDecoder().decode(ProfileResult.self, from: data)
                     DispatchQueue.main.async {
-                        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
-                        print("IMG \(profileResponce)")
                         self.task = nil
-                        completion(Result.success(Profile(data: profileResponce)))
+                        self.profile.setData(data: profileResponce)
+                        completion(Result.success(self.profile))
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
                         self.task = nil
                         completion(Result.failure(error))
                     }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
                     self.task = nil
                     completion(Result.failure(error))
                 }

@@ -20,12 +20,6 @@ class OAuth2Service {
     
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
 
-        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
-        // 1 - проверяем что есть активный запрос task != nil
-        // 2 - проверяем code == lastCode
-        
-        print("IMG \(#file)-\(#function)(\(#line)) task = \(String(describing: task)); lastCode = \(lastCode); code = \(code)")
-        
         // защита от повторного вызова функции fetchAuthToken
         if lastCode == code { return }                      // тот же код пришел. Не делаем повторный запрос
         task?.cancel()                                      // текущий запрс надо убить. (если он nil то функция не будет вызвана)
@@ -36,30 +30,22 @@ class OAuth2Service {
         let authRequest = createAuthUrl(code: code)
         
         task = networkClient.fetch(request: authRequest) { result in
-           
-            print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
-            
-            //self.task = nil  // устанавливам признак того что таск завершен  //  //Thread.isMainThread = false тут !!!!!!!
-            
             switch result {
             case .success(let data):
                 do {
                     let authResponce = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
                     DispatchQueue.main.async {
-                        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
                         self.task = nil
                         completion(Result.success(authResponce.access_token))
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
                         self.task = nil
                         completion(Result.failure(error))
                     }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
                     self.task = nil
                     completion(Result.failure(error))
                 }

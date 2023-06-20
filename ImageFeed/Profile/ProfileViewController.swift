@@ -16,8 +16,10 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var idLabel: UILabel?
     private var descriptionLabel: UILabel?
-    private var profileService = ProfileService()
+//    private var profileService = ProfileService()
     private var oAuth2TokenStorage = OAuth2TokenStorage()
+    
+    private var profile = Profile.shared
     
     
     @IBAction private func buttonExitTapped(_ sender: UIButton) {
@@ -33,24 +35,11 @@ final class ProfileViewController: UIViewController {
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
         
-        profileService.fetchProfile(oAuth2TokenStorage.token ?? "") { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let profile):
-                print("IMG \(#file)-\(#function)(\(#line)) isMainThread = \(Thread.isMainThread)")
-                print("IMG \(#file)-\(#function)(\(#line)) Profile = \(profile)")
-                self.updateScreenFields(profile: profile)
-                
-            case .failure(let error):
-                //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
-                print("IMG \(#file)-\(#function)(\(#line)) Error = \(error.localizedDescription)")
-            }
-            return
-        }
-        
+        updateProfileDetails(profile: profile)        
     }
     
-    private func updateScreenFields(profile: Profile){
+    
+    private func updateProfileDetails(profile: Profile){
         nameLabel?.text = profile.name
         idLabel?.text = profile.loginName
         descriptionLabel?.text = profile.bio
