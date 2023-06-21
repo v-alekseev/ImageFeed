@@ -85,8 +85,9 @@ final class SplashViewController: UIViewController {
                 self.fetchProfile(token: token)
                 
             case .failure(let error):
-                //TODO подумать над показом ошибки. На данный момент в задании это не оговорено, но кажется нужно хотябы алерт показать
+                print("IMG \(#file)-\(#function)(\(#line)) Error = \(error)")
                 self.oAuth2TokenStorage.token = nil // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
+                self.showErrorAlert()
             }
         }
     }
@@ -103,29 +104,37 @@ final class SplashViewController: UIViewController {
                 
             case .failure:
                 UIBlockingProgressHUD.dismiss()
-                // TODO [Sprint 11] Показать ошибку
+                self.showErrorAlert()
             }
         }
         
     }
     private func fetchProfileImage(username: String) {
-        ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
+        ProfileImageService.shared.fetchProfileImageURL(username: username) {  [weak self] result in
+            //guard let self = self else { return }
             switch result {
             case .success(let url):
                 print("IMG avatar url = \(url)")
                 break
             case .failure(let error):
                 print("IMG Error loading. Error: \(error)")
+                //self.showErrorAlert() // тут не нужен алерт, не загрузили аватарку и ладно
                 break
             }
         }
         
     }
-}
-    extension SplashViewController: AuthViewControllerDelegate {
-        func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-            UIBlockingProgressHUD.show()
-            self.fetchAuthToken(code: code)
-        }
-        
+    
+    private func showErrorAlert() {
+        let alert = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
+}
+extension SplashViewController: AuthViewControllerDelegate {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+        UIBlockingProgressHUD.show()
+        self.fetchAuthToken(code: code)
+    }
+    
+}

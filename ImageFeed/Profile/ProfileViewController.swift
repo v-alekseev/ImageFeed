@@ -25,7 +25,7 @@ final class ProfileViewController: UIViewController {
     
     
     @IBAction private func buttonExitTapped(_ sender: UIButton) {
-        print("Button tapped!")
+        print("IMG Button tapped!")
     }
     
     private var profileImageServiceObserver: NSObjectProtocol?
