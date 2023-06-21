@@ -8,10 +8,10 @@
 import Foundation
 
 class OAuth2Service {
-// Кажется его нужно сделать Singleton раз мы тут проверяем code и task // хотя может быть проблема с тем что вызвали из разных потоков. Надо подумать
-//    static let shared = TestSinglton()
-//    private init() {
-//    }
+    // Кажется его нужно сделать Singleton раз мы тут проверяем code и task // хотя может быть проблема с тем что вызвали из разных потоков. Надо подумать
+    //    static let shared = TestSinglton()
+    //    private init() {
+    //    }
     
     private let networkClient = NetworkClient()
     private var task: URLSessionDataTask?
@@ -19,36 +19,27 @@ class OAuth2Service {
     
     
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-
+        
         // защита от повторного вызова функции fetchAuthToken
-        if lastCode == code { return }                      // тот же код пришел. Не делаем повторный запрос
-        task?.cancel()                                      // текущий запрс надо убить. (если он nil то функция не будет вызвана)
-
+        if lastCode == code { return }  // тот же код пришел. Не делаем повторный запрос
+        task?.cancel() // текущий запрс надо убить. (если он nil то функция не будет вызвана)
+        
         lastCode = code
         
-        // делаем POST запрос для получения токена https://unsplash.com/oauth/token
+        // подготавливаем запрос для получения токена https://unsplash.com/oauth/token
         let authRequest = createAuthUrl(code: code)
         
-        task = networkClient.fetch(request: authRequest) { result in
+        task = networkClient.fetchAndParse(for: authRequest) { [weak self]  (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let data):
-                do {
-                    let authResponce = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    DispatchQueue.main.async {
-                        self.task = nil
-                        completion(Result.success(authResponce.access_token))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        self.task = nil
-                        completion(Result.failure(error))
-                    }
-                }
+            case .success(let authResponce):
+                self.task = nil
+                completion(Result.success(authResponce.access_token))
+                
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.task = nil
-                    completion(Result.failure(error))
-                }
+                self.task = nil
+                completion(Result.failure(error))
             }
         }
     }

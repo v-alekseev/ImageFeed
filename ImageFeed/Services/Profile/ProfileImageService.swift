@@ -7,9 +7,6 @@
 
 import Foundation
 
-//enum ParseError: Error {
-//    case imageUrlMissed
-//}
 
 final class ProfileImageService {
     
@@ -23,60 +20,40 @@ final class ProfileImageService {
     private let oAuth2TokenStorage = OAuth2TokenStorage()
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
-        print("IMG fetchProfileImageURL (1)")
-        // защита от повторного вызова функции fetchProfile
-        task?.cancel()                                      // текущий запрс надо убить. (если он nil то функция не будет вызвана)
+        
+        task?.cancel() // защита от повторного вызова функции fetchProfileImageURL
         
         guard let token = oAuth2TokenStorage.token else { return }
         
-        // делаем POST запрос для получения токена https://unsplash.com/oauth/token
+        // подготавливаем запрос для получения ссылки на аватар https://api.unsplash.com/users/
         let userInfoRequest = createGetUserRequest(with: token, user: profile.username)
-        task = networkClient.fetch(request: userInfoRequest) { [weak self] result in
-            
+        task = networkClient.fetchAndParse(for: userInfoRequest) { [weak self]  (result: Result<UserResult, Error>) in
             guard let self = self else { return }
-            
             switch result {
-            case .success(let data):
-                do {
-                    let userInfoResponce = try JSONDecoder().decode(UserResult.self, from: data)
-                    DispatchQueue.main.async {
-                        self.task = nil
-                        
-                        self.profile.avatarURL = userInfoResponce.profile_image.small
-                        
-                        completion(Result.success(userInfoResponce.profile_image.small))
-                        
-                        NotificationCenter.default
-                            .post(
-                                name: ProfileImageService.DidChangeNotification,
-                                object: self,
-                                userInfo: ["URL": userInfoResponce.profile_image.small])
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        self.task = nil
-                        completion(Result.failure(error))
-                    }
-                }
+            case .success(let userInfoResponce):
+                self.task = nil
+                self.profile.avatarURL = userInfoResponce.profile_image.small
+                completion(Result.success(userInfoResponce.profile_image.small))
+                
+                NotificationCenter.default
+                    .post(
+                        name: ProfileImageService.DidChangeNotification,
+                        object: self,
+                        userInfo: ["URL": userInfoResponce.profile_image.small])
+                
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.task = nil
-                    completion(Result.failure(error))
-                }
+                self.task = nil
+                completion(Result.failure(error))
             }
         }
-        
     }
     
     
     private func createGetUserRequest(with  token: String, user: String) -> URLRequest {
-        
         // GET /users/:username
         let UnsplashAuthorizeURLString = "https://api.unsplash.com/users/" + user
-        
         let url = URL(string: UnsplashAuthorizeURLString)// urlComponents.url!
         var request = URLRequest(url: url!)
-        
         request.setValue("Bearer " + token, forHTTPHeaderField:"Authorization")
         
         return request

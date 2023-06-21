@@ -8,8 +8,6 @@
 import Foundation
 
 
-
-
 final class ProfileService {
     
     private let networkClient = NetworkClient()
@@ -19,44 +17,28 @@ final class ProfileService {
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         
         // защита от повторного вызова функции fetchProfile
-        task?.cancel()                                      // текущий запрс надо убить. (если он nil то функция не будет вызвана)
+        task?.cancel()
         
-        // делаем POST запрос для получения токена https://unsplash.com/oauth/token
+        // подготавливаем запрос для получения  данных профайла https://api.unsplash.com/me
         let profileRequest = createGetProfileRequest(with: token)
-        
-        task = networkClient.fetch(request: profileRequest) { [weak self] result in
-            
+        task = networkClient.fetchAndParse(for: profileRequest) { [weak self]  (result: Result<ProfileResult, Error>) in
             guard let self = self else { return }
-            
             switch result {
-            case .success(let data):
-                do {
-                    let profileResponce = try JSONDecoder().decode(ProfileResult.self, from: data)
-                    DispatchQueue.main.async {
-                        self.task = nil
-                        self.profile.setData(data: profileResponce)
-                        completion(Result.success(self.profile))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        self.task = nil
-                        completion(Result.failure(error))
-                    }
-                }
+            case .success(let profileResponce):
+                self.task = nil
+                self.profile.setData(data: profileResponce)
+                completion(Result.success(self.profile))
+                
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.task = nil
-                    completion(Result.failure(error))
-                }
+                self.task = nil
+                completion(Result.failure(error))
             }
         }
     }
     
     private func createGetProfileRequest(with  token: String) -> URLRequest {
         let UnsplashAuthorizeURLString = "https://api.unsplash.com/me"
-        
-        //var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
-        let url = URL(string: UnsplashAuthorizeURLString)// urlComponents.url!
+        let url = URL(string: UnsplashAuthorizeURLString)
         var request = URLRequest(url: url!)
         
         request.setValue("Bearer " + token, forHTTPHeaderField:"Authorization")

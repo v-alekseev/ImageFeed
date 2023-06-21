@@ -31,7 +31,6 @@ final class SplashViewController: UIViewController {
         
         if let token = oAuth2TokenStorage.token {
             self.fetchProfile(token: token)
-            //self.switchToTabBarController()
         } else {
             performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: "")
         }
@@ -100,7 +99,7 @@ final class SplashViewController: UIViewController {
                 // profile уже инициализирован. тут его обрабатывать не надо
                 self.fetchProfileImage(username: profile.username)
                 UIBlockingProgressHUD.dismiss()
-                self.switchToTabBarController() // переключимся на flow библиотеки изображений
+                self.switchToTabBarController() // TODO - переключимся на flow библиотеки изображений
                 
             case .failure:
                 UIBlockingProgressHUD.dismiss()
@@ -111,8 +110,6 @@ final class SplashViewController: UIViewController {
     }
     private func fetchProfileImage(username: String) {
         ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
-            //guard let self = self else { return }
-            
             switch result {
             case .success(let url):
                 print("IMG avatar url = \(url)")

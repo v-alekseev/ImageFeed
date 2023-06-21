@@ -7,7 +7,12 @@
 
 import Foundation
 
-class Profile{
+
+// CustomStringConvertible
+///         var description: String {
+///             return "(\(x), \(y))"
+///         }
+class Profile: CustomStringConvertible{
     static let shared = Profile()
     
     private var first_name: String
@@ -18,7 +23,11 @@ class Profile{
     var loginName: String {"@" + name}
     var bio: String
     
-    var avatarURL: String? 
+    var avatarURL: String?
+    
+    var description: String {
+        return String("\(username)| \(name)| \(loginName)| \(String(describing: avatarURL))| \(bio)")
+    }
     
     private init() {
         username = ""
