@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 
 final class ProfileViewController: UIViewController {
@@ -63,7 +64,11 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = profile.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
+        //profileImageView?.kf.setImage(with: url)
+        
         print("IMG updateAvatar \(url)")
     }
     
