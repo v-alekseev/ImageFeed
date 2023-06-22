@@ -32,6 +32,7 @@
 		8B8E2A962A41D5CB00C6F6B3 /* ProfileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E2A952A41D5CB00C6F6B3 /* ProfileStorage.swift */; };
 		8B8E4CDB2A43823D006D36AD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8E4CDA2A43823D006D36AD /* Kingfisher */; };
 		8B8E4CDE2A443E86006D36AD /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8E4CDD2A443E86006D36AD /* SwiftKeychainWrapper */; };
+		8B8E4CE22A44CA87006D36AD /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E4CE12A44CA87006D36AD /* TabBarController.swift */; };
 		8BBD6B012A127A61005003C5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBD6B002A127A61005003C5 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		8B8E2A902A41AAD400C6F6B3 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		8B8E2A922A41AB4D00C6F6B3 /* ProfileImageServiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageServiceModel.swift; sourceTree = "<group>"; };
 		8B8E2A952A41D5CB00C6F6B3 /* ProfileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStorage.swift; sourceTree = "<group>"; };
+		8B8E4CE12A44CA87006D36AD /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		8BBD6B002A127A61005003C5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,13 +109,9 @@
 				8B4D406129FBC5BE00FD8CB0 /* AppDelegate.swift */,
 				8B4D406329FBC5BE00FD8CB0 /* SceneDelegate.swift */,
 				8B5E0EE32A23652F00E22E7A /* Constants.swift */,
-				8B4EA4A82A2BBE2B0089FC39 /* StartUoController */,
+				8B8E4CDF2A44CA35006D36AD /* ViewControllers */,
 				8B4EA4A22A2A6F800089FC39 /* Models */,
 				8B4EA4A52A2B4CE60089FC39 /* Services */,
-				8B5E0EE52A238A3C00E22E7A /* Auth */,
-				8B41763A2A1411E600AC0711 /* SingleImageView */,
-				8BBD6AFF2A127A1F005003C5 /* Profile */,
-				8B77C8FB2A00015000E09E6F /* ImagesList */,
 				8B4D406729FBC5BE00FD8CB0 /* Main.storyboard */,
 				8B4D406A29FBC5C400FD8CB0 /* Assets.xcassets */,
 				8B4D406C29FBC5C400FD8CB0 /* LaunchScreen.storyboard */,
@@ -143,12 +141,12 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		8B4EA4A82A2BBE2B0089FC39 /* StartUoController */ = {
+		8B4EA4A82A2BBE2B0089FC39 /* StartUpController */ = {
 			isa = PBXGroup;
 			children = (
 				8B4EA4A92A2BBE410089FC39 /* SplashViewController.swift */,
 			);
-			path = StartUoController;
+			path = StartUpController;
 			sourceTree = "<group>";
 		};
 		8B4EA4AB2A2E0E8A0089FC39 /* OAuth */ = {
@@ -186,6 +184,27 @@
 				8B8E2A952A41D5CB00C6F6B3 /* ProfileStorage.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		8B8E4CDF2A44CA35006D36AD /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8B8E4CE02A44CA75006D36AD /* TabBar */,
+				8B77C8FB2A00015000E09E6F /* ImagesList */,
+				8BBD6AFF2A127A1F005003C5 /* Profile */,
+				8B41763A2A1411E600AC0711 /* SingleImageView */,
+				8B5E0EE52A238A3C00E22E7A /* Auth */,
+				8B4EA4A82A2BBE2B0089FC39 /* StartUpController */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		8B8E4CE02A44CA75006D36AD /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				8B8E4CE12A44CA87006D36AD /* TabBarController.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		8BBD6AFF2A127A1F005003C5 /* Profile */ = {
@@ -295,6 +314,7 @@
 				8B41763C2A14120300AC0711 /* SingleImageViewController.swift in Sources */,
 				8B4EA4A72A2B4D610089FC39 /* NetworkClient.swift in Sources */,
 				8B8E2A912A41AAD400C6F6B3 /* ProfileImageService.swift in Sources */,
+				8B8E4CE22A44CA87006D36AD /* TabBarController.swift in Sources */,
 				8B5E0EE92A23943800E22E7A /* WebViewViewController.swift in Sources */,
 				8B4D406429FBC5BE00FD8CB0 /* SceneDelegate.swift in Sources */,
 			);

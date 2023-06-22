@@ -13,7 +13,7 @@
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImagesListViewController" title="ImageList" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -241,7 +241,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="biz-Wl-e9U">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarViewController" id="Mrp-6J-Tak" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="Mrp-6J-Tak" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="m0z-j4-R54"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IwX-WE-WRh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
@@ -252,30 +252,10 @@
                             <color key="backgroundColor" name="YP Black"/>
                         </tabBarAppearance>
                     </tabBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="W49-n1-qmZ"/>
-                        <segue destination="d8c-hY-TYR" kind="relationship" relationship="viewControllers" id="n4K-ok-XSI"/>
-                    </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="weQ-nl-xF9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-604" y="-307"/>
-        </scene>
-        <!--Profile View Controller-->
-        <scene sceneID="We2-uD-wsL">
-            <objects>
-                <viewController id="d8c-hY-TYR" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="tt7-Lg-xvg">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="4YG-su-skm"/>
-                        <color key="backgroundColor" name="YP Black"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="profile_Active" id="N6s-ch-oPQ"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aE0-xa-KDT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="579.71014492753625" y="-23.4375"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="AjD-yB-Rs0">
@@ -382,7 +362,6 @@
         <image name="chevron.backward" width="9" height="16"/>
         <image name="favorits_active" width="30" height="28"/>
         <image name="feed_active" width="20" height="22"/>
-        <image name="profile_Active" width="24" height="24"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

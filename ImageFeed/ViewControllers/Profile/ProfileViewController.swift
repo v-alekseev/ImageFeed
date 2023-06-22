@@ -19,9 +19,7 @@ final class ProfileViewController: UIViewController {
     private var descriptionLabel: UILabel?
     
     private var oAuth2TokenStorage = OAuth2TokenStorage()
-    
     private var profileImageService =  ProfileImageService()
-    
     private var profile = Profile.shared
     
     
@@ -34,13 +32,14 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // верстка экрана
         profileImageView = addProfileImage(UIImage(named: "Photo-1"))
         exitButton = addButtonExit()
         nameLabel = addNamelabel()
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
         
-        
+        // Обновлнени еданных на экране
         updateProfileDetails(profile: profile)
         
         profileImageServiceObserver = NotificationCenter.default    // 2
@@ -76,7 +75,10 @@ final class ProfileViewController: UIViewController {
         idLabel?.text = profile.loginName
         descriptionLabel?.text = profile.bio
     }
-    
+}
+
+// расширение для верстки экрана
+extension ProfileViewController {
     private func addProfileImage(_ image: UIImage?) -> UIImageView? {
         
         guard let image = image else { return nil}
