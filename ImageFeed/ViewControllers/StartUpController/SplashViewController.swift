@@ -19,43 +19,39 @@ final class SplashViewController: UIViewController {
     private let oAuth2Service = OAuth2Service()
     
     private let profileService = ProfileService()
-    //private let profileImageService = ProfileImageService()
     
     private var profile = Profile.shared
+    
+    private var logoImageView: UIImageView?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // верстка экрана
+        view.backgroundColor = .ypBlack
+        logoImageView = addLogoImage(UIImage(named: "SplashScreenImage"))
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         print("IMG Token = \(String(describing: oAuth2TokenStorage.token))")
+        
         // Если токен получали ранее, то переходим в библиотеку изображений. Если нет, то на экран авторизации
-        
         if let token = oAuth2TokenStorage.token {
-            self.fetchProfile(token: token)
+            self.fetchProfile(token: token)  // грузим profile и переходим к ленте
         } else {
-            performSegue(withIdentifier: ShowAuthViewSegueIdentifier, sender: "")
+            // переходим на автооизацию
+            guard let authViewController = UIStoryboard(name: "Main", bundle: .main)
+                .instantiateViewController( withIdentifier: "AuthViewController" ) as? AuthViewController else { return }
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = .fullScreen
+            present(authViewController, animated: true)
         }
-        
     }
     
     // это нужно для белого шрифта в статус бар
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == ShowAuthViewSegueIdentifier {
-            // Доберёмся до первого контроллера в навигации. Мы помним, что в программировании отсчёт начинается с 0?
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers.first as? AuthViewController
-            else { fatalError("Failed to prepare for \(ShowAuthViewSegueIdentifier)") }
-            
-            viewController.delegate = self
-            
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
     }
     
     private func switchToTabBarController() {
@@ -68,6 +64,8 @@ final class SplashViewController: UIViewController {
         
         // Установим в `rootViewController` полученный контроллер
         window.rootViewController = tabBarController
+        
+        dismiss(animated: true)
     }
     
     
@@ -131,10 +129,35 @@ final class SplashViewController: UIViewController {
         self.present(alert, animated: true)
     }
 }
+
+// AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+//        dismiss(animated: true) { [weak self] in
+//            guard let self = self else { return }
+//            UIBlockingProgressHUD.show()
+//            self.fetchAuthToken(code: code)
+//        }
+        //dismiss(animated: true)
         UIBlockingProgressHUD.show()
         self.fetchAuthToken(code: code)
     }
     
+}
+
+// расширение для верстки экрана
+extension SplashViewController {
+    private func addLogoImage(_ image: UIImage?) -> UIImageView? {
+        
+        guard let image = image else { return nil}
+        
+        let logoImageView = UIImageView()
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.image = image
+        view.addSubview(logoImageView)
+        logoImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        logoImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        
+        return logoImageView
+    }
 }

@@ -17,7 +17,7 @@ final class AuthViewController: UIViewController {
     
     private let ShowWebView: String = "ShowWebView"
     private var oAuth2TokenStorage = OAuth2TokenStorage()
-    weak var delegate: AuthViewControllerDelegate? = nil
+    weak var delegate: AuthViewControllerDelegate? // = nil
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowWebView {
@@ -41,8 +41,6 @@ extension AuthViewController:  WebViewViewControllerDelegate {
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         self.dismiss(animated: true)  // AuthViewController
-        // TODO провести эксперимент позже, когда будет большой стек UIView
-        //vc.dismiss(animated: true)  // WebViewViewController
     }
     
 }

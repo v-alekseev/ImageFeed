@@ -25,6 +25,7 @@ final class ProfileViewController: UIViewController {
     
     @IBAction private func buttonExitTapped(_ sender: UIButton) {
         print("IMG Button tapped!")
+        oAuth2TokenStorage.token = nil
     }
     
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -32,6 +33,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .ypBlack
         // верстка экрана
         profileImageView = addProfileImage(UIImage(named: "Photo-1"))
         exitButton = addButtonExit()
@@ -48,7 +50,6 @@ final class ProfileViewController: UIViewController {
                 object: nil,                                        // 4
                 queue: .main                                        // 5
             ) { [weak self] _ in
-                print("IMG addObserver closer")
                 guard let self = self else { return }
                 self.updateAvatar()                                 // 6
             }
@@ -58,16 +59,13 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar() {                                   // 8
-        print("IMG updateAvatar")
         guard
             let profileImageURL = profile.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-
+        
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
-        
-        print("IMG updateAvatar \(url)")
     }
     
     private func updateProfileDetails(profile: Profile){
@@ -87,7 +85,7 @@ extension ProfileViewController {
         profileView.translatesAutoresizingMaskIntoConstraints = false
         profileView.image = image
         profileView.layer.masksToBounds = true
-        profileView.layer.cornerRadius = 16
+        profileView.layer.cornerRadius = 35
         view.addSubview(profileView)
         profileView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         profileView.heightAnchor.constraint(equalToConstant: 70).isActive = true

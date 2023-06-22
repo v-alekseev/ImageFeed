@@ -15,15 +15,15 @@ final class OAuth2TokenStorage {
         
         get {
             let token: String? = KeychainWrapper.standard.string(forKey: "Auth token")
-            print("IMG OAuth2TokenStorage get = \(String(describing: token))")
-            return token // UserDefaults.standard.string(forKey: "authToken")
+            return token 
         }
         
         set(newValue) {
-            //let token = newValue
+            if newValue == nil {
+                KeychainWrapper.standard.removeObject(forKey: "Auth token")
+                return
+            }
             let result = KeychainWrapper.standard.set(newValue!, forKey: "Auth token")
-            print("IMG OAuth2TokenStorage set(\(newValue!) = \(result)")
-            //UserDefaults.standard.set(newValue, forKey: "authToken")
         }
     }
     
