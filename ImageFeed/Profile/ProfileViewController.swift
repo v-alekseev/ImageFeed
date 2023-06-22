@@ -67,7 +67,6 @@ final class ProfileViewController: UIViewController {
 
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
-        //profileImageView?.kf.setImage(with: url)
         
         print("IMG updateAvatar \(url)")
     }
