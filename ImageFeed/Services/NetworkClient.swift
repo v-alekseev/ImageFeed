@@ -28,7 +28,10 @@ struct NetworkClient: NetworkRouting {
             switch result {
             case .success(let data):
                 do {
-                    let responce = try JSONDecoder().decode(T.self, from: data)
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    
+                    let responce = try decoder.decode(T.self, from: data)
                     DispatchQueue.main.async {
                         completion(Result.success(responce))
                     }

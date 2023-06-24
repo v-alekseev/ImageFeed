@@ -19,7 +19,6 @@ final class ProfileViewController: UIViewController {
     private var descriptionLabel: UILabel?
     
     private var oAuth2TokenStorage = OAuth2TokenStorage()
-    private var profileImageService =  ProfileImageService()
     private var profile = Profile.shared
     
     
@@ -44,21 +43,21 @@ final class ProfileViewController: UIViewController {
         // Обновлнени еданных на экране
         updateProfileDetails(profile: profile)
         
-        profileImageServiceObserver = NotificationCenter.default    // 2
+        profileImageServiceObserver = NotificationCenter.default
             .addObserver(
-                forName: ProfileImageService.DidChangeNotification, // 3
-                object: nil,                                        // 4
-                queue: .main                                        // 5
+                forName: ProfileImageService.DidChangeNotification,
+                object: nil,
+                queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                self.updateAvatar()                                 // 6
+                self.updateAvatar()
             }
         
         updateAvatar()
         
     }
     
-    private func updateAvatar() {                                   // 8
+    private func updateAvatar() { 
         guard
             let profileImageURL = profile.avatarURL,
             let url = URL(string: profileImageURL)

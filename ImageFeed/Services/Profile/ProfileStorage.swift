@@ -11,11 +11,11 @@ import Foundation
 class Profile: CustomStringConvertible{
     static let shared = Profile()
     
-    private var first_name: String
-    private var last_name: String
+    private var firstName: String
+    private var lastName: String
     
     var username: String
-    var name: String {first_name + " " + last_name}
+    var name: String {firstName + " " + lastName}
     var loginName: String {"@" + username}
     var bio: String
     
@@ -27,22 +27,22 @@ class Profile: CustomStringConvertible{
     
     private init() {
         username = ""
-        first_name = ""
-        last_name = ""
+        firstName = ""
+        lastName = ""
         bio = ""
         avatarURL = ""
         
-        self.setData(username: nil, first_name: nil, last_name: nil, bio: nil)
+        self.setData(username: nil, firstName: nil, lastName: nil, bio: nil)
     }
     
     func setData(data: ProfileResult){
-        self.setData(username: data.userName, first_name: data.firsName, last_name: data.lastName, bio: data.bio)
+        self.setData(username: data.username, firstName: data.firstName, lastName: data.lastName, bio: data.bio)
     }
     
-    func setData(username: String?, first_name: String?, last_name: String?, bio: String?){
+    func setData(username: String?, firstName: String?, lastName: String?, bio: String?){
         self.username = username ?? "No information" // тут обязательно выводить загрушку т.к. имя пользователя должно быть обязательно
-        self.first_name = first_name ?? ""  // тут значение по умолчанию пустая сторока, т.к. пользователь может просто не указать имя
-        self.last_name = last_name ?? "" // тут значение по умолчанию пустая сторока, т.к. пользователь может просто не указать фамилию
+        self.firstName = firstName ?? ""  // тут значение по умолчанию пустая сторока, т.к. пользователь может просто не указать имя
+        self.lastName = lastName ?? "" // тут значение по умолчанию пустая сторока, т.к. пользователь может просто не указать фамилию
         self.bio = bio ?? "No information" // тут обязательно выводить загрушку т.к. в интерфейсе это смотриться лучше чем просто пустота
     }
     

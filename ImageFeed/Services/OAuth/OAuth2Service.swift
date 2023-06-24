@@ -21,13 +21,13 @@ class OAuth2Service {
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         // защита от повторного вызова функции fetchAuthToken
-        if lastCode == code { return }  // тот же код пришел. Не делаем повторный запрос
-        task?.cancel() // текущий запрс надо убить. (если он nil то функция не будет вызвана)
+        if lastCode == code { return }
+        task?.cancel()
         
         lastCode = code
         
         // подготавливаем запрос для получения токена https://unsplash.com/oauth/token
-        let authRequest = createAuthUrl(code: code)
+        guard let authRequest = createAuthUrl(code: code) else { return }
         
         task = networkClient.fetchAndParse(for: authRequest) { [weak self]  (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self = self else { return }
@@ -44,7 +44,7 @@ class OAuth2Service {
         }
     }
     
-    private func createAuthUrl(code: String) -> URLRequest {
+    private func createAuthUrl(code: String) -> URLRequest? {
         
         let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/token"
         
@@ -57,12 +57,12 @@ class OAuth2Service {
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
         
-        let url = urlComponents.url!
+        guard let url = urlComponents.url else { return nil}
         
         return URLRequest(url: url)
     }
     
-    func createCodeRequestURL() -> URLRequest {
+    func createCodeRequestURL() -> URLRequest? {
         let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
         
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
@@ -73,7 +73,7 @@ class OAuth2Service {
             URLQueryItem(name: "scope", value: Consts.AccessScope)
         ]
         
-        let url = urlComponents.url!
+        guard let url = urlComponents.url else { return nil}
         
         return URLRequest(url: url)
     }

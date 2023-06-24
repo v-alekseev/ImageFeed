@@ -98,7 +98,7 @@ final class SplashViewController: UIViewController {
                 // profile уже инициализирован. тут его обрабатывать не надо
                 self.fetchProfileImage(username: profile.username)
                 UIBlockingProgressHUD.dismiss()
-                self.switchToTabBarController() // TODO - переключимся на flow библиотеки изображений
+                self.switchToTabBarController()
                 
             case .failure:
                 UIBlockingProgressHUD.dismiss()
@@ -133,12 +133,7 @@ final class SplashViewController: UIViewController {
 // AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-//        dismiss(animated: true) { [weak self] in
-//            guard let self = self else { return }
-//            UIBlockingProgressHUD.show()
-//            self.fetchAuthToken(code: code)
-//        }
-        //dismiss(animated: true)
+
         UIBlockingProgressHUD.show()
         self.fetchAuthToken(code: code)
     }
