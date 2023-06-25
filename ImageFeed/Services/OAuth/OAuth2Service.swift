@@ -35,7 +35,7 @@ class OAuth2Service {
             switch result {
             case .success(let authResponce):
                 self.task = nil
-                completion(Result.success(authResponce.access_token))
+                completion(Result.success(authResponce.accessToken))
                 
             case .failure(let error):
                 self.task = nil
