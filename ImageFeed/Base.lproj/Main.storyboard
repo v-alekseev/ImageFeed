@@ -92,7 +92,7 @@
                             <constraint firstItem="sXN-U4-YkU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="nC4-J9-X9g"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="feed_Active" id="7MW-13-2YE"/>
+                    <tabBarItem key="tabBarItem" title="" image="feed_active" id="7MW-13-2YE"/>
                     <connections>
                         <outlet property="tableView" destination="sXN-U4-YkU" id="28q-nY-mRx"/>
                         <segue destination="780-gX-dKy" kind="presentation" identifier="ShowSingleImage" id="PHY-eE-B3n"/>
@@ -333,7 +333,7 @@
         <image name="Sharing" width="50" height="50"/>
         <image name="chevron.backward" width="9" height="16"/>
         <image name="favorits_active" width="30" height="28"/>
-        <image name="feed_Active" width="30" height="30"/>
+        <image name="feed_active" width="30" height="30"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
