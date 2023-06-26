@@ -10,12 +10,12 @@ import UIKit
 final class ImagesListViewController: UIViewController {
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
-        
+    
     
     @IBOutlet private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +32,8 @@ final class ImagesListViewController: UIViewController {
     
     // это нужно для белого шрифта в статус бар
     override var preferredStatusBarStyle: UIStatusBarStyle {
-            return .lightContent
-        }
+        return .lightContent
+    }
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -41,7 +41,7 @@ final class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     }()
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowSingleImageSegueIdentifier {
             let destinationViewController = segue.destination as! SingleImageViewController // 2
@@ -53,13 +53,13 @@ final class ImagesListViewController: UIViewController {
             super.prepare(for: segue, sender: sender)
         }
     }
-
+    
 }
 
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
         
     }
@@ -72,13 +72,13 @@ extension ImagesListViewController: UITableViewDelegate {
             return ImagesListCell.defaultHeight
         }
         
-
+        
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         // todo что лучше использовать tableView.bounds.width или tableView.visibleSize.width
         let k = (tableView.bounds.width - imageInsets.left - imageInsets.right)/image.size.width
-
+        
         return CGFloat(image.size.height*k + imageInsets.top + imageInsets.bottom )
-    
+        
     }
 }
 
@@ -86,13 +86,13 @@ extension ImagesListViewController: UITableViewDataSource {
     
     // Устанавливам колличество ячеек
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return photosName.count
-        }
+        return photosName.count
+    }
     
     // Создаем ячейу
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         
-
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         
         guard let imageListCell = cell as? ImagesListCell else {
@@ -100,7 +100,7 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         
         configCell(for: imageListCell, with: indexPath)
- 
+        
         return imageListCell
     }
     
@@ -108,11 +108,11 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return
         }
-    
+        
         cell.imageCellList.image = image
         cell.labelDate.text = dateFormatter.string(from: Date())
         cell.likeButton.imageView?.image  = indexPath.row % 2 == 0 ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
- 
+        
     }
     
 }

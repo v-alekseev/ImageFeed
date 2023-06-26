@@ -9,10 +9,9 @@ import Foundation
 
 
 struct OAuthTokenResponseBody: Codable  {
-    var access_token: String
-    var token_type: String
-    //var refresh_token: String
+    var accessToken: String
+    var tokenType: String
     var scope: String
-    var created_at: Int64
+    var createdAt: Int64
 }
 

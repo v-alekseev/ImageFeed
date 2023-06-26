@@ -8,30 +8,43 @@
 import Foundation
 
 class OAuth2Service {
+    // Кажется его нужно сделать Singleton раз мы тут проверяем code и task // хотя может быть проблема с тем что вызвали из разных потоков. Надо подумать
+    //    static let shared = TestSinglton()
+    //    private init() {
+    //    }
     
-    let networkClient = NetworkClient()
+    private let networkClient = NetworkClient()
+    private var task: URLSessionDataTask?
+    private var lastCode: String?
+    
     
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         
-        // делаем POST запрос для получения токена https://unsplash.com/oauth/token
-        let authUrl = createAuthUrl(code: code)
+        // защита от повторного вызова функции fetchAuthToken
+        if lastCode == code { return }
+        task?.cancel()
         
-        networkClient.fetch(url: authUrl) { result in
+        lastCode = code
+        
+        // подготавливаем запрос для получения токена https://unsplash.com/oauth/token
+        guard let authRequest = createAuthUrl(code: code) else { return }
+        
+        task = networkClient.fetchAndParse(for: authRequest) { [weak self]  (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let data):
-                do {
-                    let authResponce = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    completion(Result.success(authResponce.access_token))
-                } catch {
-                    completion(Result.failure(error))
-                }
+            case .success(let authResponce):
+                self.task = nil
+                completion(Result.success(authResponce.accessToken))
+                
             case .failure(let error):
+                self.task = nil
                 completion(Result.failure(error))
             }
         }
     }
     
-    private func createAuthUrl(code: String) -> URL {
+    private func createAuthUrl(code: String) -> URLRequest? {
         
         let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/token"
         
@@ -44,10 +57,12 @@ class OAuth2Service {
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
         
-        return urlComponents.url!
+        guard let url = urlComponents.url else { return nil}
+        
+        return URLRequest(url: url)
     }
     
-    func createCodeRequestURL() -> URL {
+    func createCodeRequestURL() -> URLRequest? {
         let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
         
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
@@ -57,7 +72,10 @@ class OAuth2Service {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Consts.AccessScope)
         ]
-        return urlComponents.url!
+        
+        guard let url = urlComponents.url else { return nil}
+        
+        return URLRequest(url: url)
     }
 }
 
