@@ -20,7 +20,17 @@ struct NetworkClient: NetworkRouting {
         case genericError(Error)
     }
     
-    
+//    private func customDataDecoder(decoder: Decoder) throws -> Date {
+//        let container = try decoder.singleValueContainer()
+//        let str = try container.decode(String.self)
+//        
+//        let isoDate = "2023-06-27T02:36:25Z"
+//
+//        let dateFormatter = ISO8601DateFormatter()
+//        let date = dateFormatter.date(from:isoDate)!
+//        
+//        return date
+//    }
     
     func fetchAndParse<T: Decodable>( for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionDataTask? {
         
@@ -30,6 +40,7 @@ struct NetworkClient: NetworkRouting {
                 do {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    decoder.dateDecodingStrategy = .iso8601
                     
                     let responce = try decoder.decode(T.self, from: data)
                     DispatchQueue.main.async {
@@ -52,7 +63,7 @@ struct NetworkClient: NetworkRouting {
     
     func fetch(request: URLRequest, handler: @escaping (Result<Data, Error>) -> Void)  -> URLSessionDataTask? {
         
-        //print("IMG URLRequest url  = \(String(describing: request.url))")
+        print("IMG URLRequest url  = \(String(describing: request.url))")
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             

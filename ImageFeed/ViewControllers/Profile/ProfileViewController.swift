@@ -48,9 +48,11 @@ final class ProfileViewController: UIViewController {
                 forName: ProfileImageService.DidChangeNotification,
                 object: nil,
                 queue: .main
-            ) { [weak self] _ in
+            ) { [weak self] pr in
+                print("IMG pr = \(pr)")
                 guard let self = self else { return }
                 self.updateAvatar()
+                
             }
         
         updateAvatar()

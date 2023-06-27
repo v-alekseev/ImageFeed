@@ -16,6 +16,8 @@ final class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
+    private var imageListService = ImagesListService()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,31 @@ final class ImagesListViewController: UIViewController {
         
         // это регистрации ячейки программно
         // tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
+        
+        NotificationCenter.default
+            .addObserver(
+                forName: ImagesListService.DidImageListChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                print("IMG NotificationCenter event. \(self.imageListService.photos)")
+            }
+        
+        loadPhotos()
+        
+    }
+    
+    private func loadPhotos() {
+        imageListService.fetchPhotosNextPage() {[weak self]  ( result: Result<String, Error>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let str):
+                print("IMG success str = \(str)")
+            case .failure(let error):
+                print("IMG error = \(error)")
+            }
+        }
     }
     
     // это нужно для белого шрифта в статус бар
@@ -67,6 +94,12 @@ extension ImagesListViewController: UITableViewDelegate {
     
     // устанавливаем высоту ячейки
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        print("IMGrow indexPath = \(indexPath.row) imageListService.photos.count = \(imageListService.photos.count))")
+        if (indexPath.row + 1 == imageListService.photos.count) {
+            print("IMGrow get new page")
+            loadPhotos()
+        }
         
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return ImagesListCell.defaultHeight
