@@ -7,9 +7,6 @@
 
 import Foundation
 
-
-
-
 class ImagesListService {
     
     private (set) var photos: [Photo] = []
@@ -27,7 +24,7 @@ class ImagesListService {
     private var task: URLSessionDataTask?
     private let oAuth2TokenStorage = OAuth2TokenStorage()
     
-    func fetchPhotosNextPage(completion: @escaping (Result<String, Error>) -> Void ) {
+    func fetchPhotosNextPage() { //}(completion: @escaping (Result<String, Error>) -> Void ) {
         
         if task != nil { return } // если уже идет загрузка, ее не прерываем
    
@@ -48,7 +45,7 @@ class ImagesListService {
                 print("IMG photosList = \(photosList.count)")
                 print("IMG Photo = \(self.photos.count)")
                 self.lastLoadedPage += 1
-                completion(Result.success(""))
+                //completion(Result.success(""))
                 
                 NotificationCenter.default
                     .post(
@@ -58,7 +55,9 @@ class ImagesListService {
                 
             case .failure(let error):
                 self.task = nil
-                completion(Result.failure(error))
+                print("IMG error load images list. error = \(error)")
+                //completion(Result.failure(error))
+                break
             }
         }
     }

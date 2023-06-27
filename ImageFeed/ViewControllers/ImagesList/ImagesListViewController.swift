@@ -41,21 +41,21 @@ final class ImagesListViewController: UIViewController {
                 print("IMG NotificationCenter event. \(self.imageListService.photos)")
             }
         
-        loadPhotos()
+        imageListService.fetchPhotosNextPage()
         
     }
     
-    private func loadPhotos() {
-        imageListService.fetchPhotosNextPage() {[weak self]  ( result: Result<String, Error>) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let str):
-                print("IMG success str = \(str)")
-            case .failure(let error):
-                print("IMG error = \(error)")
-            }
-        }
-    }
+//    private func loadPhotos() {
+//        imageListService.fetchPhotosNextPage() {[weak self]  ( result: Result<String, Error>) in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let str):
+//                print("IMG success str = \(str)")
+//            case .failure(let error):
+//                print("IMG error = \(error)")
+//            }
+//        }
+//    }
     
     // это нужно для белого шрифта в статус бар
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -98,7 +98,7 @@ extension ImagesListViewController: UITableViewDelegate {
         print("IMGrow indexPath = \(indexPath.row) imageListService.photos.count = \(imageListService.photos.count))")
         if (indexPath.row + 1 == imageListService.photos.count) {
             print("IMGrow get new page")
-            loadPhotos()
+            imageListService.fetchPhotosNextPage()
         }
         
         guard let image = UIImage(named: photosName[indexPath.row]) else {
