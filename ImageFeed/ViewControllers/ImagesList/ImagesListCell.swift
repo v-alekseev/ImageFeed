@@ -7,22 +7,26 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     static let favoritsActive = "favorits_active"
     static let favoritsNoactive = "favorits_noactive"
-    static let defaultHeight = CGFloat(500)
+    static let defaultHeight = CGFloat(300)
+    
+    var row: Int?
     
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var imageCellList: UIImageView!
     @IBOutlet weak var labelDate: UILabel!
     
-//    override func layoutSubviews() {
-//          super.layoutSubviews()
-//          //set the values for top,left,bottom,right margins
-//          let margins = UIEdgeInsets(top: -5, left: 0, bottom: -5, right: 0)
-//          contentView.frame = contentView.frame.inset(by: margins)
-//    }
+    override func prepareForReuse() {
+         super.prepareForReuse()
+        print("IMG prepareForReuse() (\(row))")
+         // Отменяем загрузку, чтобы избежать багов при переиспользовании ячеек
+        imageCellList.kf.cancelDownloadTask()
+     }
+
 
 }

@@ -38,6 +38,7 @@ final class SplashViewController: UIViewController {
         
         // Если токен получали ранее, то переходим в библиотеку изображений. Если нет, то на экран авторизации
         if let token = oAuth2TokenStorage.token {
+           
             self.fetchProfile(token: token)  // грузим profile и переходим к ленте
         } else {
             // переходим на автооизацию

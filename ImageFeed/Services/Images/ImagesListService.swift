@@ -27,7 +27,7 @@ class ImagesListService {
     private var task: URLSessionDataTask?
     private let oAuth2TokenStorage = OAuth2TokenStorage()
     
-    func fetchPhotosNextPage(completion: @escaping (Result<String, Error>) -> Void ) {
+    func fetchPhotosNextPage() { //(completion: @escaping (Result<String, Error>) -> Void ) {
         
         if task != nil { return } // если уже идет загрузка, ее не прерываем
    
@@ -48,17 +48,18 @@ class ImagesListService {
                 print("IMG photosList = \(photosList.count)")
                 print("IMG Photo = \(self.photos.count)")
                 self.lastLoadedPage += 1
-                completion(Result.success(""))
                 
                 NotificationCenter.default
                     .post(
                         name: ImagesListService.DidImageListChangeNotification,
                         object: self,
                         userInfo: nil)
-                
+                break
             case .failure(let error):
                 self.task = nil
-                completion(Result.failure(error))
+                print("IMG Error = \(error)")
+
+                break
             }
         }
     }

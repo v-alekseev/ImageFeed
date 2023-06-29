@@ -25,7 +25,7 @@ class Photo {
         self.welcomeDescription = data.description
         self.thumbImageURL = data.urls.thumb
         self.largeImageURL = data.urls.full
-        self.isLiked = (data.likes > 0)
+        self.isLiked = data.likedByUser
     }
 
     
