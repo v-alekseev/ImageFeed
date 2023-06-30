@@ -8,18 +8,49 @@
 import UIKit
 import Kingfisher
 
+
 final class ImagesListViewController: UIViewController {
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
-    
     
     @IBOutlet private var tableView: UITableView!
     
     private var imageListService = ImagesListService()
     
-    //private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private var currentImageListSize: Int = 0
     
+    @IBAction func TestButton(_ sender: UIButton) {
+        let v = sender.superview?.superview as! ImagesListCell
+        print("IMG ImagesListViewController|buttomPressed liked = \(imageListService.photos[v.row!].isLiked)  id = \(imageListService.photos[v.row!].id)")
+    }
+    
+    @IBAction func buttomPressed(_ sender: UIButton) {
+
+        guard let cell = sender.superview?.superview as? ImagesListCell else { return }
+        guard let index = cell.row else { return }
+
+        let photo = imageListService.photos[index]
+        print("IMG ImagesListViewController|buttomPressed row = \(String(describing: index)) id = \(photo.id) liked = \(photo.isLiked)")
+        
+        UIBlockingProgressHUD.show()
+        imageListService.changeLike(photoId: photo.id, isLike: !(photo.isLiked)) {  [weak self, index, weak cell, weak sender ] result in
+            guard let self = self,
+                  let cell = cell else { return }
+            
+            switch result {
+            case .success(_):
+                //self.tableView.reloadRows(at: [IndexPath(row: index.row!, section: 0)], with: .automatic)
+                UIBlockingProgressHUD.dismiss()
+//                cell.likeButton.imageView?.image  = self.imageListService.photos[index].isLiked ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
+                self.updateLikeButton(cell: cell, photo: self.imageListService.photos[index])
+                break
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("IMG Error = \(error)")
+                break
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,13 +73,14 @@ final class ImagesListViewController: UIViewController {
                 print("IMG NotificationCenter array Photos updated. Count =  \(self.imageListService.photos.count)")
                 self.updateTableViewAnimated()
             }
-        //UIBlockingProgressHUD.show()
+  
         imageListService.fetchPhotosNextPage()
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIBlockingProgressHUD.show()
+        //print("IMG viewDidAppear =  UIBlockingProgressHUD.show()")
+        //UIBlockingProgressHUD.show()
     }
     
     
@@ -109,29 +141,15 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
         if(imageListService.photos.count > 0){
-            print("IMG tableView/heightForRowAt calculate hight (\(indexPath.row)) return image size ")
+            //print("IMG tableView/heightForRowAt calculate hight (\(indexPath.row)) return image size ")
             return calculateCellHeight(size: imageListService.photos[indexPath.row].size)
         }
         else {
-            print("IMG tableView/heightForRowAt calculate hight (\(indexPath.row)) return default ")
+            //print("IMG tableView/heightForRowAt calculate hight (\(indexPath.row)) return default ")
             return ImagesListCell.defaultHeight
         }
     }
-////        let cell = self.tableView.cellForRow(at: indexPath)
-////        print("IMG tableView/heightForRowAt calculate hight start (\(indexPath.row))")
-////
-////        if cell == nil {
-////            print("IMG tableView/heightForRowAt calculate hight (\(indexPath.row)) cell == nil ")
-////            guard let imageStub = UIImage(named: "Stub") else {
-////                return ImagesListCell.defaultHeight
-////            }
-////            return calculateCellHeight(image: imageStub)
-////        }
-////        print("IMG tableView/heightForRowAt calculate hight (\(indexPath.row)) cell exist ")
-////        guard let item =  cell as? ImagesListCell  else { return ImagesListCell.defaultHeight }
-////        return calculateCellHeight(image: item.imageCellList.image)
-//
-//    }
+
     
     private func calculateCellHeight(image: UIImage?) -> CGFloat{
         guard let image = image else { return ImagesListCell.defaultHeight}
@@ -151,11 +169,12 @@ extension ImagesListViewController: UITableViewDelegate {
     //Tells the delegate the table view is about to draw a cell for a particular row.
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
  
+        
         UIBlockingProgressHUD.dismiss()
         
-        print("IMG tableView/willDisplay indexPath = (\(indexPath.row)) imageListService.photos.count = \(imageListService.photos.count))")
+        //print("IMG tableView/willDisplay indexPath = (\(indexPath.row)) imageListService.photos.count = \(imageListService.photos.count))")
         if (indexPath.row + 1 == imageListService.photos.count) {
-            print("IMG row get new page")
+            print("IMG tableView/willDisplay row get NEWPAGE indexPath = (\(indexPath.row)) imageListService.photos.count = \(imageListService.photos.count))")
             imageListService.fetchPhotosNextPage()
         }
     }
@@ -199,7 +218,7 @@ extension ImagesListViewController: UITableViewDataSource {
             switch result {
             case .success(let value):
                 print("IMG imageCellList.kf.setImage reloadRows(\(indexPath.row))")
-                self.tableView.reloadRows(at: [indexPath], with: .none)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
 
             case .failure(let error):
                 print(error) // The error happens
@@ -208,8 +227,13 @@ extension ImagesListViewController: UITableViewDataSource {
         
         cell.labelDate.text = dateFormatter.string(from: imageListService.photos[indexPath.row].createdAt ?? Date())
         
-        cell.likeButton.imageView?.image  = imageListService.photos[indexPath.row].isLiked ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
+//        cell.likeButton.imageView?.image  = imageListService.photos[indexPath.row].isLiked ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
+        updateLikeButton(cell: cell, photo: imageListService.photos[indexPath.row])
         
+    }
+     
+    private func updateLikeButton(cell: ImagesListCell, photo: Photo) {
+        cell.likeButton.imageView?.image  = photo.isLiked ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
     }
     
 

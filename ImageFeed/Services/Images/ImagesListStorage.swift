@@ -27,16 +27,5 @@ class Photo {
         self.largeImageURL = data.urls.full
         self.isLiked = data.likedByUser
     }
-
-    
-//    func setData(data: PhotoResult) {
-//        self.id = data.id
-//        self.size = CGSize(width: data.width, height: data.height)
-//        self.createdAt = data.createdAt
-//        self.welcomeDescription = data.description
-//        self.thumbImageURL = data.urls.thumb
-//        self.largeImageURL = data.urls.full
-//        self.isLiked = (data.likes > 0)
-//    }
     
 }

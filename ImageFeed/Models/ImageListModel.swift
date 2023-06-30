@@ -8,9 +8,9 @@
 import Foundation
 import CoreGraphics
 
-//struct PhotosResult: Codable {
-//    var photos: [PhotoResult]
-//}
+struct LikeResult: Codable {
+    var photo: PhotoResult
+}
 
 struct PhotoResult: Codable {
     var id: String
@@ -59,3 +59,4 @@ struct UrlsResult: Codable {
 //  },
 //  // ... more photos
 //]
+

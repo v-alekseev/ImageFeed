@@ -109,15 +109,15 @@ final class SplashViewController: UIViewController {
         
     }
     private func fetchProfileImage(username: String) {
-        ProfileImageService.shared.fetchProfileImageURL(username: username) {  [weak self] result in
+        ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
             //guard let self = self else { return }
+
             switch result {
             case .success(let url):
                 print("IMG avatar url = \(url)")
                 break
             case .failure(let error):
                 print("IMG Error loading. Error: \(error)")
-                //self.showErrorAlert() // тут не нужен алерт, не загрузили аватарку и ладно
                 break
             }
         }
