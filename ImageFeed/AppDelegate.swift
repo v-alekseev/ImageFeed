@@ -5,7 +5,9 @@
 //  Created by Vitaly Alekseev on 28.04.2023.
 //
 
+import Foundation
 import UIKit
+import ProgressHUD
 
 
 extension UIColor {
@@ -24,6 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        ProgressHUD.animationType = .systemActivityIndicator
+        ProgressHUD.colorHUD = .black
+        ProgressHUD.colorAnimation = .lightGray
+        print("IMG didFinishLaunchingWithOptions")
         return true
     }
 

@@ -9,13 +9,19 @@ import Foundation
 import UIKit
 import Kingfisher
 
+
+
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     static let favoritsActive = "favorits_active"
     static let favoritsNoactive = "favorits_noactive"
     static let defaultHeight = CGFloat(300)
     
-    public var row: Int?
+    public var indexPath: IndexPath?  // TODO
+    
+    
+    weak var delegate: ImagesListCellDelegate?
+    
     
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var imageCellList: UIImageView!
@@ -30,6 +36,7 @@ final class ImagesListCell: UITableViewCell {
 
     @IBAction func likeButtonPressed(_ sender: Any) {
         print("IMG ImagesListCell likeButtonPressed")
+        delegate?.imageListCellDidTapLike(self)
     }
     
 }

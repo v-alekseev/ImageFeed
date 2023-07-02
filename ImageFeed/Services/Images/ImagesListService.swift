@@ -45,9 +45,7 @@ class ImagesListService {
                 // Поиск индекса элемента
                 // TODO пробросить сюда тупо индекс массива, а не id  фото
                 if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-                    //print("Photo old = \(self.photos[index].isLiked) Photo new = \(newPhoto.isLiked); Index = \(index)")
                     self.photos[index] = newPhoto
-                    //print("Photo old = \(self.photos[index].isLiked) Photo new = \(newPhoto.isLiked)")
                     completion(Result.success(""))
                 }
                 break
