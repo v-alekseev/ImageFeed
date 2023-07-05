@@ -16,13 +16,13 @@ final class ProfileViewController: UIViewController {
     
     private var exitButton: UIButton?
     private var profileImageView: UIImageView?
-
+    private var gradientProfileImageView: CALayer?
     private var nameLabel: UILabel?
-
+    private var gradientNameLabel: CALayer?
     private var idLabel: UILabel?
-
+    private var gradientIdLabel: CALayer?
     private var descriptionLabel: UILabel?
- 
+    private var gradientDescriptionLabel: CALayer?
     
     private var oAuth2TokenStorage = OAuth2TokenStorage()
     private var profile = Profile.shared
@@ -63,7 +63,12 @@ final class ProfileViewController: UIViewController {
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        gradientProfileImageView = addGradient(view: profileImageView)
+        gradientNameLabel = addGradient(view: nameLabel)
+        gradientIdLabel = addGradient(view: idLabel)
+        gradientDescriptionLabel = addGradient(view: descriptionLabel)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +80,11 @@ final class ProfileViewController: UIViewController {
         nameLabel = addNamelabel()
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
+       
+        
 
+        
+        //animationLayers.insert(gradient)
     
         // Обновлнени еданных на экране
         self.updateProfileDetails(profile: profile)
@@ -95,7 +104,38 @@ final class ProfileViewController: UIViewController {
         
     }
     
- 
+    private func addGradient(view: UIView?) -> CAGradientLayer {
+        ///////////////////
+        /// делаем градиент
+        ///
+        let gradient = CAGradientLayer()
+        let viewSize = view?.frame.size
+        print("IMG addGradient size = \(viewSize)")
+        gradient.frame = CGRect(origin: .zero, size: viewSize! )
+        gradient.locations = [0, 0.1, 0.3]
+        gradient.colors = [
+            UIColor(red: 0.682, green: 0.686, blue: 0.706, alpha: 1).cgColor,
+            UIColor(red: 0.531, green: 0.533, blue: 0.553, alpha: 1).cgColor,
+            UIColor(red: 0.431, green: 0.433, blue: 0.453, alpha: 1).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        //gradient.cornerRadius = 35
+        gradient.masksToBounds = true
+
+        
+        
+        let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
+        gradientChangeAnimation.duration = 1.0
+        gradientChangeAnimation.repeatCount = .infinity
+        gradientChangeAnimation.fromValue = [0, 0.1, 0.3]
+        gradientChangeAnimation.toValue = [0, 0.8, 1]
+        gradient.add(gradientChangeAnimation, forKey: "locationsChange")
+        
+        view?.layer.addSublayer(gradient)
+        
+        return gradient
+    }
     
     private func updateAvatar() { 
         guard
@@ -105,7 +145,9 @@ final class ProfileViewController: UIViewController {
         
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
-
+        
+        // Remove animation
+        //self.gradientProfileImageView?.removeFromSuperlayer()
     }
     
     private func updateProfileDetails(profile: Profile){
