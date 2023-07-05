@@ -58,6 +58,7 @@ final class ImagesListViewController: UIViewController {
         if addRows <= 0 { return }
         
         var indexs: [IndexPath] = []
+        // TODO переделать на map
         for item in currentImageListSize..<imageListService.photos.count {
             indexs.append(IndexPath(row: item, section: 0))
         }
