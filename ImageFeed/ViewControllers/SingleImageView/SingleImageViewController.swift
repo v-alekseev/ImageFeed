@@ -17,7 +17,7 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     
     var imageUrl: URL?
-
+    
     var image: UIImage! {
         didSet {
             guard isViewLoaded else {return}

@@ -20,18 +20,6 @@ struct NetworkClient: NetworkRouting {
         case genericError(Error)
     }
     
-//    private func customDataDecoder(decoder: Decoder) throws -> Date {
-//        let container = try decoder.singleValueContainer()
-//        let str = try container.decode(String.self)
-//        
-//        let isoDate = "2023-06-27T02:36:25Z"
-//
-//        let dateFormatter = ISO8601DateFormatter()
-//        let date = dateFormatter.date(from:isoDate)!
-//        
-//        return date
-//    }
-    
     func fetchAndParse<T: Decodable>( for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionDataTask? {
         
         let task = self.fetch(request: request) { result in

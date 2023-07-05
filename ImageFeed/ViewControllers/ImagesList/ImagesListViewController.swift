@@ -14,8 +14,6 @@ protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-
-
 final class ImagesListViewController: UIViewController {
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
@@ -63,13 +61,10 @@ final class ImagesListViewController: UIViewController {
             indexs.append(IndexPath(row: item, section: 0))
         }
         
-        
         currentImageListSize = imageListService.photos.count
         tableView.insertRows(at: indexs, with: .automatic)
         
-        
     }
-    
     
     // это нужно для белого шрифта в статус бар
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -132,7 +127,7 @@ extension ImagesListViewController: UITableViewDelegate {
     //Tells the delegate the table view is about to draw a cell for a particular row.
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         UIBlockingProgressHUD.dismiss()
-
+        
         if (indexPath.row + 1 == imageListService.photos.count) {
             imageListService.fetchPhotosNextPage()
         }
@@ -180,32 +175,29 @@ extension ImagesListViewController: UITableViewDataSource {
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 
             case .failure(let error):
-                print(error) // The error happens
+                print(error)
             }
         }
-        
-        cell.labelDate.text = dateFormatter.string(from: imageListService.photos[indexPath.row].createdAt ?? Date())
+        let dateImageCreated = imageListService.photos[indexPath.row].createdAt
+        cell.labelDate.text = (dateImageCreated != nil) ? dateFormatter.string(from:  dateImageCreated!) : ""
         updateLikeButton(cell: cell, photo: imageListService.photos[indexPath.row])
     }
     
     private func updateLikeButton(cell: ImagesListCell, photo: Photo) {
         cell.likeButton.imageView?.image  = photo.isLiked ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
     }
-
-    
-    
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         
-        // TODO Это сособе без сохранения indexPath в ячейке. Мне он не нравиться
-//        guard let indexPath = tableView.indexPath(for: cell) else { return }
-//        let photo = imageListService.photos[indexPath.row]
+        // TODO Это сособе без сохранения indexPath в ячейке. Мне он не нравиться, но оставлю тут как пример. Будет полезно в будущем
+        //        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        //        let photo = imageListService.photos[indexPath.row]
         
         guard let indexPath = cell.indexPath else { return }
         let photo = imageListService.photos[indexPath.row]
-       
+        
         print("IMG ImagesListViewController|buttomPressed row = \(String(describing: index)) id = \(photo.id) liked = \(photo.isLiked)")
         
         UIBlockingProgressHUD.show()

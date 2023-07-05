@@ -12,17 +12,13 @@ import WebKit
 
 
 final class ProfileViewController: UIViewController {
-  
     
     private var exitButton: UIButton?
     private var profileImageView: UIImageView?
-
     private var nameLabel: UILabel?
-
     private var idLabel: UILabel?
-
     private var descriptionLabel: UILabel?
- 
+    
     
     private var oAuth2TokenStorage = OAuth2TokenStorage()
     private var profile = Profile.shared
@@ -31,39 +27,44 @@ final class ProfileViewController: UIViewController {
     
     
     @IBAction private func buttonExitTapped(_ sender: UIButton) {
-        // тут так же чистим и keychain
-        oAuth2TokenStorage.token = nil
-        // Очишаем куки и другие данные сессии
-        cleanWebData()
-        // Переключаемся на SplashScreen
-        switchToSplashScreen()
         
-        dismiss(animated: true)
+        let alert = UIAlertController(title: "Пока, пока!", message: "Вы уверены что хотите выйти?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Выхожу точно", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            // тут так же чистим и keychain
+            self.oAuth2TokenStorage.token = nil
+            // Очишаем куки и другие данные сессии
+            self.cleanWebData()
+            // Переключаемся на SplashScreen
+            self.switchToSplashScreen()
+            
+            self.dismiss(animated: true)
+        })
+        alert.addAction(UIAlertAction(title: "Пожалуй останусь", style: .default))
+        
+        self.present(alert, animated: true)
         
     }
-
+    
     private func cleanWebData() {
-       // Очищаем все куки из хранилища.
-       HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-       // Запрашиваем все данные из локального хранилища.
-       WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-          // Массив полученных записей удаляем из хранилища.
-          records.forEach { record in
-             WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-          }
-       }
+        // Очищаем все куки из хранилища.
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        // Запрашиваем все данные из локального хранилища.
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            // Массив полученных записей удаляем из хранилища.
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
     }
     
     private func switchToSplashScreen() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
         window.rootViewController = SplashViewController()
         window.makeKeyAndVisible()
-
     }
     
     private var profileImageServiceObserver: NSObjectProtocol?
-    
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,8 +76,7 @@ final class ProfileViewController: UIViewController {
         nameLabel = addNamelabel()
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
-
-    
+        
         // Обновлнени еданных на экране
         self.updateProfileDetails(profile: profile)
         
@@ -95,7 +95,7 @@ final class ProfileViewController: UIViewController {
         
     }
     
- 
+    
     
     private func updateAvatar() { 
         guard
@@ -105,7 +105,7 @@ final class ProfileViewController: UIViewController {
         
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
-
+        
     }
     
     private func updateProfileDetails(profile: Profile){
@@ -149,8 +149,8 @@ extension ProfileViewController {
         button.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24).isActive = true
         
-      
-
+        
+        
         return button
     }
     
@@ -165,8 +165,8 @@ extension ProfileViewController {
         view.addSubview(label)
         label.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8).isActive = true
         label.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor).isActive = true
-    
-    
+        
+        
         return label
     }
     
@@ -184,7 +184,7 @@ extension ProfileViewController {
         label.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor).isActive = true
         
         
-
+        
         return label
     }
     
