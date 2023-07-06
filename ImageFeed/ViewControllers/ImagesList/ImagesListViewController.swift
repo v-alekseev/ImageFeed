@@ -6,20 +6,26 @@
 //
 
 import UIKit
+import Kingfisher
+
+
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListViewController: UIViewController {
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     
-    
     @IBOutlet private var tableView: UITableView!
     
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private var imageListService = ImagesListService()
     
+    private var currentImageListSize: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -28,6 +34,36 @@ final class ImagesListViewController: UIViewController {
         
         // это регистрации ячейки программно
         // tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
+        
+        NotificationCenter.default
+            .addObserver(
+                forName: ImagesListService.DidImageListChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                print("IMG NotificationCenter array Photos updated. Count =  \(self.imageListService.photos.count)")
+                self.updateTableViewAnimated()
+            }
+        
+        imageListService.fetchPhotosNextPage()
+        
+    }
+    
+    private func updateTableViewAnimated() {
+        
+        let addRows = imageListService.photos.count - currentImageListSize
+        if addRows <= 0 { return }
+        
+        var indexs: [IndexPath] = []
+        // TODO переделать на map
+        for item in currentImageListSize..<imageListService.photos.count {
+            indexs.append(IndexPath(row: item, section: 0))
+        }
+        
+        currentImageListSize = imageListService.photos.count
+        tableView.insertRows(at: indexs, with: .automatic)
+        
     }
     
     // это нужно для белого шрифта в статус бар
@@ -44,11 +80,9 @@ final class ImagesListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowSingleImageSegueIdentifier {
-            let destinationViewController = segue.destination as! SingleImageViewController // 2
+            let destinationViewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath
-            let image = UIImage(named: photosName[indexPath.row])
-            //_ = destinationViewController.view // CRASH FIXED !?4
-            destinationViewController.image = image
+            destinationViewController.imageUrl = imageListService.photos[indexPath.row].largeImageURL
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -59,26 +93,44 @@ final class ImagesListViewController: UIViewController {
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
-        
     }
     
     
-    // устанавливаем высоту ячейки
+    // устанавливаем высоту ячейки // Asks the delegate for the height to use for a row in a specified location.
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
+        if(imageListService.photos.count > 0){
+            return calculateCellHeight(size: imageListService.photos[indexPath.row].size)
+        }
+        else {
             return ImagesListCell.defaultHeight
         }
+    }
+    
+    
+    private func calculateCellHeight(image: UIImage?) -> CGFloat{
+        guard let image = image else { return ImagesListCell.defaultHeight}
         
+        return calculateCellHeight(size:  image.size)
+    }
+    
+    private func calculateCellHeight(size: CGSize) -> CGFloat{
         
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        // todo что лучше использовать tableView.bounds.width или tableView.visibleSize.width
-        let k = (tableView.bounds.width - imageInsets.left - imageInsets.right)/image.size.width
+        let k = (tableView.bounds.width - imageInsets.left - imageInsets.right)/size.width
         
-        return CGFloat(image.size.height*k + imageInsets.top + imageInsets.bottom )
+        return CGFloat(size.height*k + imageInsets.top + imageInsets.bottom )
+    }
+    
+    
+    //Tells the delegate the table view is about to draw a cell for a particular row.
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        UIBlockingProgressHUD.dismiss()
         
+        if (indexPath.row + 1 == imageListService.photos.count) {
+            imageListService.fetchPhotosNextPage()
+        }
     }
 }
 
@@ -86,16 +138,17 @@ extension ImagesListViewController: UITableViewDataSource {
     
     // Устанавливам колличество ячеек
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photosName.count
+        return currentImageListSize
     }
     
     // Создаем ячейу
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
+        print("IMG tableView/cellForRowAt create cell (\(indexPath.row))")
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         
         guard let imageListCell = cell as? ImagesListCell else {
+            print("IMG tableView/cellForRowAt  create cell (\(indexPath.row)) return new cell ")
             return UITableViewCell()
         }
         
@@ -105,16 +158,64 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
+        
+        //TODO нужна проверка на выход за пределы массива
+        let url = imageListService.photos[indexPath.row].thumbImageURL
+        cell.indexPath = indexPath
+        cell.delegate = self
+        
+        cell.imageCellList.kf.indicatorType = .activity
+        cell.imageCellList.kf.setImage(with: url, placeholder: UIImage(named: "Stub"))  { [weak self]  result in
+            // `result` is either a `.success(RetrieveImageResult)` or a `.failure(KingfisherError)`
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(_):
+                print("IMG imageCellList.kf.setImage reloadRows(\(indexPath.row))")
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                
+            case .failure(let error):
+                print(error)
+            }
         }
-        
-        cell.imageCellList.image = image
-        cell.labelDate.text = dateFormatter.string(from: Date())
-        cell.likeButton.imageView?.image  = indexPath.row % 2 == 0 ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
-        
+        let dateImageCreated = imageListService.photos[indexPath.row].createdAt
+        cell.labelDate.text = (dateImageCreated != nil) ? dateFormatter.string(from:  dateImageCreated!) : ""
+        updateLikeButton(cell: cell, photo: imageListService.photos[indexPath.row])
     }
     
+    private func updateLikeButton(cell: ImagesListCell, photo: Photo) {
+        cell.likeButton.imageView?.image  = photo.isLiked ? UIImage(named: ImagesListCell.favoritsActive) : UIImage(named: ImagesListCell.favoritsNoactive)
+    }
 }
 
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        
+        // TODO Это сособе без сохранения indexPath в ячейке. Мне он не нравиться, но оставлю тут как пример. Будет полезно в будущем
+        //        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        //        let photo = imageListService.photos[indexPath.row]
+        
+        guard let indexPath = cell.indexPath else { return }
+        let photo = imageListService.photos[indexPath.row]
+        
+        print("IMG ImagesListViewController|buttomPressed row = \(String(describing: index)) id = \(photo.id) liked = \(photo.isLiked)")
+        
+        UIBlockingProgressHUD.show()
+        imageListService.changeLike(photoId: photo.id, isLike: !(photo.isLiked)) {  [weak self, indexPath, weak cell ] result in
+            guard let self = self,
+                  let cell = cell else { return }
+            
+            switch result {
+            case .success(_):
+                UIBlockingProgressHUD.dismiss()
+                self.updateLikeButton(cell: cell, photo: self.imageListService.photos[indexPath.row])
+                break
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("IMG Error = \(error)")
+                break
+            }
+        }
+    }
+}
 

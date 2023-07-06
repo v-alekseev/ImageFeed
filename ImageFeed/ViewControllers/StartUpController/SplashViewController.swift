@@ -38,6 +38,7 @@ final class SplashViewController: UIViewController {
         
         // Если токен получали ранее, то переходим в библиотеку изображений. Если нет, то на экран авторизации
         if let token = oAuth2TokenStorage.token {
+            
             self.fetchProfile(token: token)  // грузим profile и переходим к ленте
         } else {
             // переходим на автооизацию
@@ -108,15 +109,15 @@ final class SplashViewController: UIViewController {
         
     }
     private func fetchProfileImage(username: String) {
-        ProfileImageService.shared.fetchProfileImageURL(username: username) {  [weak self] result in
+        ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
             //guard let self = self else { return }
+            
             switch result {
             case .success(let url):
                 print("IMG avatar url = \(url)")
                 break
             case .failure(let error):
                 print("IMG Error loading. Error: \(error)")
-                //self.showErrorAlert() // тут не нужен алерт, не загрузили аватарку и ладно
                 break
             }
         }
@@ -133,7 +134,7 @@ final class SplashViewController: UIViewController {
 // AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-
+        
         UIBlockingProgressHUD.show()
         self.fetchAuthToken(code: code)
     }

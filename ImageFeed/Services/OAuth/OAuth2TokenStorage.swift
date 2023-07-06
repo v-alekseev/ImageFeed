@@ -23,7 +23,7 @@ final class OAuth2TokenStorage {
                 KeychainWrapper.standard.removeObject(forKey: "Auth token")
                 return
             }
-            let result = KeychainWrapper.standard.set(newValue!, forKey: "Auth token")
+            KeychainWrapper.standard.set(newValue!, forKey: "Auth token")
         }
     }
     

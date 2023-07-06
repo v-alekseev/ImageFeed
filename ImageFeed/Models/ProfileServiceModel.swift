@@ -13,11 +13,4 @@ struct ProfileResult: Codable {
     var firstName: String?
     var lastName: String?
     var bio: String?
-
-//    enum CodingKeys: String, CodingKey {
-//        case userName = "username"
-//        case firsName = "first_name"
-//        case lastName = "last_name"
-//        case bio = "bio"
-//    }
 }

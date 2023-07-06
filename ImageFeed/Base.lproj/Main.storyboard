@@ -29,7 +29,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="245"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lEv-uR-TXw" userLabel="ImageCell">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stub" translatesAutoresizingMaskIntoConstraints="NO" id="lEv-uR-TXw" userLabel="ImageCell">
                                                     <rect key="frame" x="16" y="4" width="382" height="237"/>
                                                     <color key="backgroundColor" name="YP Black"/>
                                                     <userDefinedRuntimeAttributes>
@@ -39,8 +39,8 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOE-bB-X4E" userLabel="LikeButtom">
-                                                    <rect key="frame" x="354" y="4" width="44" height="44"/>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOE-bB-X4E" userLabel="LikeButtom">
+                                                    <rect key="frame" x="354" y="4" width="44" height="31"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="FGb-1F-VIS"/>
                                                         <constraint firstAttribute="width" constant="44" id="uyM-B2-Htv"/>
@@ -48,6 +48,9 @@
                                                     <color key="tintColor" name="YP Red"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="favorits_active"/>
+                                                    <connections>
+                                                        <action selector="likeButtonPressed:" destination="dWa-pm-YYi" eventType="touchUpInside" id="Yoe-qm-GHv"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 202" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAz-Fy-hA4" userLabel="LabelImageDate">
                                                     <rect key="frame" x="24" y="215" width="94" height="18"/>
@@ -100,7 +103,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="557.97101449275362" y="-738.61607142857144"/>
+            <point key="canvasLocation" x="556.52173913043487" y="-738.61607142857144"/>
         </scene>
         <!--Auth View Controller-->
         <scene sceneID="o9T-Nb-TN3">
@@ -241,7 +244,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLw-gg-Ght">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="MHo-ZL-mvi">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" translatesAutoresizingMaskIntoConstraints="NO" id="MHo-ZL-mvi">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                         <color key="backgroundColor" name="YP Black"/>
                                         <color key="tintColor" name="YP White"/>
@@ -327,10 +330,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="0" width="200" height="132"/>
         <image name="Backward" width="24" height="24"/>
         <image name="Logo_of_Unsplash" width="60" height="60"/>
         <image name="Sharing" width="50" height="50"/>
+        <image name="Stub" width="343" height="252"/>
         <image name="chevron.backward" width="9" height="16"/>
         <image name="favorits_active" width="30" height="28"/>
         <image name="feed_active" width="30" height="30"/>
