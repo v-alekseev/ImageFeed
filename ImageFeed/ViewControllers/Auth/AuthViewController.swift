@@ -25,6 +25,10 @@ final class AuthViewController: UIViewController {
             let destinationViewController = segue.destination as! WebViewViewController
             destinationViewController.webViewDelegate = self  // WebViewViewControllerDelegate
             
+            let webViewPresenter = WebViewPresenter()
+            destinationViewController.presenter = webViewPresenter
+            webViewPresenter.view = destinationViewController
+            
         } else {
             super.prepare(for: segue, sender: sender)
         }

@@ -66,7 +66,9 @@ class ImagesListService {
         guard let photosListRequest = createGetImagesListRequest(with: token) else { return }
         
         taskPagination = networkClient.fetchAndParse(for: photosListRequest) { [weak self]  (result: Result<[PhotoResult], Error>) in
-            guard let self = self else { return }
+            guard let self = self else {
+                print("IMG fetchPhotosNextPage self = \(self)")
+                return }
             switch result {
             case .success(let photosList):
                 self.taskPagination = nil

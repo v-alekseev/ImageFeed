@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8B0E6A302A379DC500F73A65 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 8B0E6A2F2A379DC500F73A65 /* ProgressHUD */; };
+		8B1E10262A5D793B00E9384F /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E10252A5D793B00E9384F /* WebViewPresenter.swift */; };
 		8B24D31929FFD2FB00CAAAE0 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B24D31829FFD2FB00CAAAE0 /* ImagesListViewController.swift */; };
 		8B41763C2A14120300AC0711 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B41763B2A14120300AC0711 /* SingleImageViewController.swift */; };
 		8B4D406229FBC5BE00FD8CB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4D406129FBC5BE00FD8CB0 /* AppDelegate.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B1E10252A5D793B00E9384F /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		8B24D31829FFD2FB00CAAAE0 /* ImagesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesListViewController.swift; sourceTree = "<group>"; };
 		8B41763B2A14120300AC0711 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		8B4D405E29FBC5BE00FD8CB0 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +173,7 @@
 			children = (
 				8B5E0EE62A238A4F00E22E7A /* AuthViewController.swift */,
 				8B5E0EE82A23943800E22E7A /* WebViewViewController.swift */,
+				8B1E10252A5D793B00E9384F /* WebViewPresenter.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				8B5E0EE42A23652F00E22E7A /* Constants.swift in Sources */,
 				8B41763C2A14120300AC0711 /* SingleImageViewController.swift in Sources */,
 				8B4EA4A72A2B4D610089FC39 /* NetworkClient.swift in Sources */,
+				8B1E10262A5D793B00E9384F /* WebViewPresenter.swift in Sources */,
 				8B8E2A912A41AAD400C6F6B3 /* ProfileImageService.swift in Sources */,
 				8B8E4CE22A44CA87006D36AD /* TabBarController.swift in Sources */,
 				8B5E0EE92A23943800E22E7A /* WebViewViewController.swift in Sources */,
