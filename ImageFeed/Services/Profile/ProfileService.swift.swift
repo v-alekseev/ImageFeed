@@ -37,8 +37,11 @@ final class ProfileService {
     }
     
     private func createGetProfileRequest(with  token: String) -> URLRequest {
-        let UnsplashAuthorizeURLString = "https://api.unsplash.com/me"
-        let url = URL(string: UnsplashAuthorizeURLString)
+        let UnsplashProfileRequestURLString = Consts.DefaultBaseURL.absoluteString + "/me"
+        
+        //Consts.DefaultBaseURL.absoluteString
+        
+        let url = URL(string: UnsplashProfileRequestURLString)
         var request = URLRequest(url: url!)
         
         request.setValue("Bearer " + token, forHTTPHeaderField:"Authorization")
@@ -47,3 +50,4 @@ final class ProfileService {
     }
     
 }
+

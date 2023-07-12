@@ -17,10 +17,16 @@ public protocol WebViewPresenterProtocol: AnyObject{
 
 final class WebViewPresenter: WebViewPresenterProtocol {
     weak var view: WebViewViewControllerProtocol?
-    private var oAuth2Service = OAuth2Service()
+    //private var oAuth2Service = OAuth2Service()
+    
+    var authHelper: AuthHelperProtocol
+        
+    init(authHelper: AuthHelperProtocol) {
+            self.authHelper = authHelper
+    }
     
     func viewDidLoad() {
-        guard let request = oAuth2Service.createCodeRequestURL() else { return }
+        guard let request = authHelper.authRequest()  else { return }   //oAuth2Service.createCodeRequestURL() else { return }
         view?.load(request: request)
         didUpdateProgressValue(0) // set progressbar to 0 position
     }
@@ -33,20 +39,24 @@ final class WebViewPresenter: WebViewPresenterProtocol {
            view?.setProgressHidden(shouldHideProgress)
     }
        
-    private func shouldHideProgress(for value: Float) -> Bool {
+    func shouldHideProgress(for value: Float) -> Bool {
            abs(value - 1.0) <= 0.0001
     }
     
     func code(from url: URL) -> String? {
-        if
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
-        {
-            return codeItem.value
-        } else {
-            return nil
-        }
+        authHelper.code(from: url)
     }
+    
+//    func code(from url: URL) -> String? {
+//        if
+//            let urlComponents = URLComponents(string: url.absoluteString),
+//            urlComponents.path == "/oauth/authorize/native",
+//            let items = urlComponents.queryItems,
+//            let codeItem = items.first(where: { $0.name == "code" })
+//        {
+//            return codeItem.value
+//        } else {
+//            return nil
+//        }
+//    }
 }
