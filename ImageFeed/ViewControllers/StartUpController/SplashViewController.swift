@@ -84,6 +84,8 @@ final class SplashViewController: UIViewController {
                 self.fetchProfile(token: token)
                 
             case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                // TODO почему-то алерт не показывается и надо уходить на SplashScreen опять
                 print("IMG \(#file)-\(#function)(\(#line)) Error = \(error)")
                 self.oAuth2TokenStorage.token = nil // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
                 self.showErrorAlert()

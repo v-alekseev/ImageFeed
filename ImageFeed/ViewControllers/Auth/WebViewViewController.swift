@@ -32,10 +32,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     
     weak var webViewDelegate: WebViewViewControllerDelegate?  = nil
     
-//    private var oAuth2Service = OAuth2Service()
-    
-    
-    
     private var estimatedProgressObservation: NSKeyValueObservation?
     
     @IBAction func didTapBackButton2(_ sender: UIButton) {
@@ -46,11 +42,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         super.viewDidLoad()
         
         webView.navigationDelegate = self  // WKNavigationDelegate
-        
-        
-        //self.presenter?.didUpdateProgressValue(self.webView.estimatedProgress) // перенесли в presenter
-        
-        
+
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
              options: [],
@@ -71,12 +63,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     func load(request: URLRequest) {
         webView.load(request)
     }
-    
-    
-//    private func updateProgress() {
-//        progressView.progress = Float(webView.estimatedProgress)
-//        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-//    }
     
     
     func setProgressValue(_ newValue: Float) {
@@ -114,17 +100,5 @@ extension WebViewViewController: WKNavigationDelegate {
             return nil
         }
         
-//
-//        if
-//            let url = navigationAction.request.url,
-//            let urlComponents = URLComponents(string: url.absoluteString),
-//            urlComponents.path == "/oauth/authorize/native",
-//            let items = urlComponents.queryItems,
-//            let codeItem = items.first(where: { $0.name == "code" })
-//        {
-//            return codeItem.value
-//        } else {
-//            return nil
-//        }
     }
 }

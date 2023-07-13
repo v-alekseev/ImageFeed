@@ -56,7 +56,7 @@ final class ProfileImageService {
     
     private func createGetUserRequest(with  token: String, user: String) -> URLRequest? {
         // GET /users/:username
-        let UnsplashAuthorizeURLString = Consts.DefaultBaseURL.absoluteString + "/users/" + user
+        let UnsplashAuthorizeURLString = Consts.DefaultAPIURL.absoluteString + "/users/" + user
         guard let url = URL(string: UnsplashAuthorizeURLString) else { return nil}
         var request = URLRequest(url: url)
         request.setValue("Bearer " + token, forHTTPHeaderField:"Authorization")

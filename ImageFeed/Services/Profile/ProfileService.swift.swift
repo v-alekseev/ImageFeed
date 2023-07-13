@@ -37,7 +37,7 @@ final class ProfileService {
     }
     
     private func createGetProfileRequest(with  token: String) -> URLRequest {
-        let UnsplashProfileRequestURLString = Consts.DefaultBaseURL.absoluteString + "/me"
+        let UnsplashProfileRequestURLString = Consts.DefaultAPIURL.absoluteString + "/me"
         
         //Consts.DefaultBaseURL.absoluteString
         

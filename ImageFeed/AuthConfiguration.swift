@@ -12,7 +12,8 @@ struct Consts {
     static let SecretKey = "T3lIYNWcbXfnDVJxmnqhr7IAiCCf09r4aujz6xA-ZmU"
     static let RedirectURI = "urn:ietf:wg:oauth:2.0:oob"
     static let AccessScope =  "public+read_user+write_likes"
-    static let DefaultBaseURL = URL(string: "https://api.unsplash.com")!
+    static let DefaultAPIURL = URL(string: "https://api.unsplash.com")!
+    static let DefaultBaseURL = URL(string: "https://unsplash.com")!
     static let photosPerPage = 5
     static let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 }
@@ -33,7 +34,7 @@ struct AuthConfiguration {
                                  redirectURI: Consts.RedirectURI,
                                  accessScope: Consts.AccessScope,
                                  authURLString: Consts.UnsplashAuthorizeURLString,
-                                 defaultBaseURL: Consts.DefaultBaseURL)
+                                 defaultBaseURL: Consts.DefaultAPIURL)
     }
     
     init(accessKey: String, secretKey: String, redirectURI: String, accessScope: String, authURLString: String, defaultBaseURL: URL) {

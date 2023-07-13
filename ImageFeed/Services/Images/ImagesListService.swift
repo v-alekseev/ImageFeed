@@ -117,7 +117,7 @@ class ImagesListService {
     
     // подготавливаем запрос для  установки/снятия like https://api.unsplash.com/photos/\(photoId)/like (likr = true, set like, false delete like)
     private func createLikeRequest(with token: String, photoId: String, like: Bool)  -> URLRequest? {
-        let UnsplashAuthorizeURLString = Consts.DefaultBaseURL.absoluteString + "/photos/\(photoId)/like"
+        let UnsplashAuthorizeURLString = Consts.DefaultAPIURL.absoluteString + "/photos/\(photoId)/like"
         
         guard let url = URL(string: UnsplashAuthorizeURLString) else { return nil}
         
