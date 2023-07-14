@@ -7,9 +7,16 @@
 
 import Foundation
 
-class ImagesListService {
+public protocol ImagesListServiceProtocol {
+    var photos: [Photo] { get set }
     
-    private (set) var photos: [Photo] = []
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<String, Error>) -> Void)
+}
+
+class ImagesListService: ImagesListServiceProtocol {
+    
+    var photos: [Photo] = []
     
     private var lastLoadedPage: Int = 0
     private var nextPage: Int  {
@@ -117,6 +124,7 @@ class ImagesListService {
     
     // подготавливаем запрос для  установки/снятия like https://api.unsplash.com/photos/\(photoId)/like (likr = true, set like, false delete like)
     private func createLikeRequest(with token: String, photoId: String, like: Bool)  -> URLRequest? {
+        
         let UnsplashAuthorizeURLString = Consts.DefaultAPIURL.absoluteString + "/photos/\(photoId)/like"
         
         guard let url = URL(string: UnsplashAuthorizeURLString) else { return nil}
