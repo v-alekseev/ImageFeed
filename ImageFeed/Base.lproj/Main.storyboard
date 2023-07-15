@@ -41,6 +41,7 @@
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOE-bB-X4E" userLabel="LikeButtom">
                                                     <rect key="frame" x="354" y="4" width="44" height="31"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="LikeButton"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="FGb-1F-VIS"/>
                                                         <constraint firstAttribute="width" constant="44" id="uyM-B2-Htv"/>
@@ -88,6 +89,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
+                        <accessibility key="accessibilityConfiguration" identifier="ImageListView"/>
                         <constraints>
                             <constraint firstItem="sXN-U4-YkU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="53a-05-pGS"/>
                             <constraint firstAttribute="bottom" secondItem="sXN-U4-YkU" secondAttribute="bottom" id="8BA-Uu-lKr"/>
@@ -123,6 +125,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ZE-7O-iL6" userLabel="Login">
                                 <rect key="frame" x="16" y="724" width="382" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="sek-KO-WiH"/>
                                 </constraints>
