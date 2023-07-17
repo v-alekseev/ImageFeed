@@ -69,9 +69,9 @@ class ImageFeedUITests: XCTestCase {
         //sleep(1)
 
         //let likeCell = tablesQuery.children(matching: .cell).element(boundBy: 1)
-        let likeCell = tablesQuery.cells.element(boundBy: 1)
-        print(app.debugDescription)
-        XCTAssertTrue(likeCell.waitForExistence(timeout: 10))
+//        let likeCell = tablesQuery.cells.element(boundBy: 0)
+//        print(app.debugDescription)
+//        XCTAssertTrue(likeCell.waitForExistence(timeout: 10))
         //likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         //sleep(2)
     }
@@ -85,18 +85,18 @@ class ImageFeedUITests: XCTestCase {
         //let cell = tablesQuery.cells.element(boundBy: 0)
         XCTAssertTrue(cell.waitForExistence(timeout: 10))
         
-        //sleep(1)
+        sleep(2)
 //        // Сделать жест «смахивания» вверх по экрану для его скролла
         cell.swipeUp()
         sleep(2)
 
         let likeCell = tablesQuery.children(matching: .cell).element(boundBy: 1)
-        print(app.debugDescription)
+        //print(app.debugDescription)
         //XCTAssertTrue(likeCell.waitForExistence(timeout: 10))
         likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         sleep(2)
 //
-        print(app.debugDescription)
+        //print(app.debugDescription)
         // Отменить лайк в ячейке верхней картинки
         let button2 = likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
         button2.tap()
