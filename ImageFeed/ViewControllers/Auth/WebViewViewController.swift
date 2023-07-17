@@ -25,7 +25,7 @@ public protocol WebViewViewControllerProtocol: AnyObject {
 
 final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
     
-    var presenter: WebViewPresenterProtocol? // TODO ??? weak ??? в этом случае presenter становиться nil  во viewDidLoad
+    var presenter: WebViewPresenterProtocol?
     
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var webView: WKWebView!
@@ -54,9 +54,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
                 presenter.didUpdateProgressValue(self.webView.estimatedProgress)
              })
         
-//        guard let request = oAuth2Service.createCodeRequestURL() else { return }
-//        webView.load(request)
-        if presenter == nil { print("IMG presenter = nil") }
         presenter?.viewDidLoad()
         
     }

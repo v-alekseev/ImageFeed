@@ -40,22 +40,13 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     
     private func cleanWebData() {
         // Очищаем все куки из хранилища.
-        print("IMG HTTPCookieStorage.shared.cookies?.count(1) = \(HTTPCookieStorage.shared.cookies?.count)")
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        print("IMG HTTPCookieStorage.shared.cookies?.count(2) = \(HTTPCookieStorage.shared.cookies?.count)")
         // Запрашиваем все данные из локального хранилища.
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             // Массив полученных записей удаляем из хранилища.
-            print("IMG records.count(1) = \(records.count)")
             records.forEach { record in
                 WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
             }
-            print("IMG records.count(2) = \(records.count)")
-        }
-        
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            // Массив полученных записей удаляем из хранилища.
-            print("IMG records.count(2) = \(records.count)")
         }
     }
 

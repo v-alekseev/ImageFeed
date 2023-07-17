@@ -46,7 +46,6 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                print("IMG NotificationCenter array Photos updated. Count =  \(self.presenter?.getPhotoCount())")
                 self.updateTableViewAnimated()
             }
         // загружаем первую страницу фоток
@@ -168,7 +167,6 @@ extension ImagesListViewController: UITableViewDataSource {
     
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         
-        //TODO нужна проверка на выход за пределы массива
         let url = presenter?.photo(indexPath.row).thumbImageURL
         cell.indexPath = indexPath
         cell.delegate = self
@@ -202,9 +200,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
         
         guard let indexPath = cell.indexPath else { return }
         guard let photo = presenter?.photo(indexPath.row) else { return }
-        
-        print("IMG ImagesListViewController|buttomPressed row = \(String(describing: index)) id = \(photo.id) liked = \(photo.isLiked)")
-        
+         
         UIBlockingProgressHUD.show()
         presenter?.changeLike(photoId: photo.id, isLike: !(photo.isLiked)) {  [weak self, indexPath, weak cell ] result in
             UIBlockingProgressHUD.dismiss()

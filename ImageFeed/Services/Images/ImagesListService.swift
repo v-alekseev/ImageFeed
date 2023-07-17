@@ -73,9 +73,7 @@ class ImagesListService: ImagesListServiceProtocol {
         guard let photosListRequest = createGetImagesListRequest(with: token) else { return }
         
         taskPagination = networkClient.fetchAndParse(for: photosListRequest) { [weak self]  (result: Result<[PhotoResult], Error>) in
-            guard let self = self else {
-                print("IMG fetchPhotosNextPage self = \(self)")
-                return }
+            guard let self = self else { return }
             switch result {
             case .success(let photosList):
                 self.taskPagination = nil
@@ -104,7 +102,7 @@ class ImagesListService: ImagesListServiceProtocol {
     
     private func createGetImagesListRequest(with  token: String) -> URLRequest? {
         // GET /photos
-        let UnsplashAuthorizeURLString = "https://api.unsplash.com/photos"
+        let UnsplashAuthorizeURLString = Consts.DefaultAPIURL.absoluteString + "/photos"
         
         guard var urlComponents =  URLComponents(string: UnsplashAuthorizeURLString) else { return nil}
     

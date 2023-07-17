@@ -90,7 +90,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
                 object: nil,
                 queue: .main
             ) { [weak self] pr in
-                print("IMG pr = \(pr)")
                 guard let self = self else { return }
                 self.presenter?.didUpdateAvatar()
             }
@@ -141,7 +140,7 @@ extension ProfileViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "exit"), for: .normal)
         button.addTarget(self, action: #selector(self.buttonExitTapped), for: .touchUpInside)
-        
+        button.accessibilityIdentifier = "LogoutButton"
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .ypRed
         view.addSubview(button)
@@ -160,6 +159,7 @@ extension ProfileViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Екатерина Новикова"
         label.textColor = .ypWhite
+        label.accessibilityIdentifier = "NameLastname"
         label.font = UIFont.boldSystemFont(ofSize: 23.0)
         view.addSubview(label)
         label.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8).isActive = true
@@ -176,6 +176,7 @@ extension ProfileViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "@ekaterina_nov"
+        label.accessibilityIdentifier = "username"
         label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 13.0)
         view.addSubview(label)

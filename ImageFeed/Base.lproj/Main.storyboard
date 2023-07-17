@@ -146,6 +146,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="k9k-6T-3PW"/>
                         <color key="backgroundColor" name="YP Black"/>
+                        <accessibility key="accessibilityConfiguration" identifier="AuthViewController"/>
                         <constraints>
                             <constraint firstItem="5ZE-7O-iL6" firstAttribute="centerX" secondItem="hyn-fJ-RMg" secondAttribute="centerX" id="1Tk-YN-8It"/>
                             <constraint firstAttribute="bottom" secondItem="5ZE-7O-iL6" secondAttribute="bottom" constant="124" id="5JV-zk-rZn"/>
@@ -267,6 +268,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9SD-4Y-OKS" userLabel="returnButton">
                                 <rect key="frame" x="0.0" y="46" width="44" height="44"/>
+                                <accessibility key="accessibilityConfiguration" identifier="BackToImageListButton"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="PBC-DQ-c7t"/>
                                     <constraint firstAttribute="height" constant="44" id="v47-dU-UMl"/>

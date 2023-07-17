@@ -26,10 +26,8 @@ class ImageFeedUITests: XCTestCase {
         
         let webView = app.webViews["UnsplashWebView"]
         
-        
         // Подождать, пока экран авторизации открывается и загружается
         XCTAssertTrue(webView.waitForExistence(timeout: 5))
-        print("IMGTST webView.exists = \(webView.exists)")
         
         // Ввести данные в форму
         let loginTextField = webView.textFields.element
@@ -38,12 +36,12 @@ class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         
         loginTextField.tap()
-        loginTextField.typeText("***")
+        loginTextField.typeText("---")
         print(app.debugDescription)
         app.toolbars["Toolbar"].buttons["Done"].tap()
         
         passwordTextField.tap()
-        passwordTextField.typeText("***")
+        passwordTextField.typeText("---")
         
         
         // Нажать кнопку логина
@@ -57,54 +55,98 @@ class ImageFeedUITests: XCTestCase {
         
     }
     
+    func testFeed2() throws {
+        
+        // Подождать, пока открывается экран ленты
+        let tablesQuery = app.tables
+        //let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        let cell = tablesQuery.cells.element(boundBy: 0)
+        XCTAssertTrue(cell.waitForExistence(timeout: 10))
+        
+        sleep(1)
+//        // Сделать жест «смахивания» вверх по экрану для его скролла
+        cell.swipeUp()
+        //sleep(1)
+
+        //let likeCell = tablesQuery.children(matching: .cell).element(boundBy: 1)
+        let likeCell = tablesQuery.cells.element(boundBy: 1)
+        print(app.debugDescription)
+        XCTAssertTrue(likeCell.waitForExistence(timeout: 10))
+        //likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        //sleep(2)
+    }
+    
     func testFeed() throws {
         // тестируем сценарий ленты
         
         // Подождать, пока открывается экран ленты
         let tablesQuery = app.tables
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        //let cell = tablesQuery.cells.element(boundBy: 0)
         XCTAssertTrue(cell.waitForExistence(timeout: 10))
         
-        print("cell text = \(cell.staticTexts.element.label)")
-        print(app.debugDescription)
-        
-        let imagestableviewTable = app/*@START_MENU_TOKEN@*/.tables["ImagesTableView"]/*[[".otherElements[\"ImageListView\"].tables[\"ImagesTableView\"]",".tables[\"ImagesTableView\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        let likebuttonButton2 = imagestableviewTable.children(matching: .cell).element(boundBy: 1)/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        let likebuttonButton22 = imagestableviewTable.children(matching: .cell).element(boundBy: 1)/*@START_MENU_TOKEN@*/.buttons["favorits active"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/
-        likebuttonButton2.tap()
+        //sleep(1)
+//        // Сделать жест «смахивания» вверх по экрану для его скролла
+        cell.swipeUp()
+        sleep(2)
 
-        sleep(10)
+        let likeCell = tablesQuery.children(matching: .cell).element(boundBy: 1)
+        print(app.debugDescription)
+        //XCTAssertTrue(likeCell.waitForExistence(timeout: 10))
+        likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        sleep(2)
+//
+        print(app.debugDescription)
         // Отменить лайк в ячейке верхней картинки
+        let button2 = likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        button2.tap()
+        sleep(2)
+
         // Нажать на верхнюю ячейку
+        likeCell.tap()
+
         // Подождать, пока картинка открывается на весь экран
+        sleep(2)
+
         // Увеличить картинку
+        let image = app.scrollViews.images.element(boundBy: 0)
+        // Zoom in
+        image.pinch(withScale: 3, velocity: 1) // zoom in
+
         // Уменьшить картинку
+        // Zoom out
+        image.pinch(withScale: 0.5, velocity: -1)
         // Вернуться на экран ленты
-        
+
+        let navBackButtonWhiteButton = app.buttons["BackToImageListButton"]
+            navBackButtonWhiteButton.tap()
+
         
     }
     
     func testProfile() throws {
         // тестируем сценарий профиля
-    }
-    func testRecord() {
-        XCUIApplication().tables["ImagesTableView"].cells.containing(.staticText, identifier:"2 марта 2022 г.").buttons["LikeButton"].tap()
         
-        let app = XCUIApplication()
-        let imagestableviewTable = app/*@START_MENU_TOKEN@*/.tables["ImagesTableView"]/*[[".otherElements[\"ImageListView\"].tables[\"ImagesTableView\"]",".tables[\"ImagesTableView\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        let likebuttonButton = imagestableviewTable.cells.containing(.staticText, identifier:"2 марта 2022 г.")/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        likebuttonButton.tap()
-        likebuttonButton.tap()
-        likebuttonButton.tap()
-        likebuttonButton.tap()
+        // Подождать, пока открывается экран ленты
+        XCTAssertTrue(app.tables.element.waitForExistence(timeout: 10))
+
+       // Перейти на экран профиля
+        app.tabBars.buttons.element(boundBy: 1).tap()
         
-        let likebuttonButton2 = imagestableviewTable.children(matching: .cell).element(boundBy: 1)/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        likebuttonButton2.tap()
-        likebuttonButton2.tap()
-        likebuttonButton.tap()
-        app.tabBars["Tab Bar"].buttons.containing(.image, identifier:"feed_active").element.tap()
-        app/*@START_MENU_TOKEN@*/.icons["Команды"]/*[[".otherElements[\"Home screen icons\"]",".icons.icons[\"Команды\"]",".icons[\"Команды\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
-        app.otherElements["Home screen icons"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
-                
+       // Проверить, что на нём отображаются ваши персональные данные
+        XCTAssertTrue(app.staticTexts["NameLastname"].exists)
+        XCTAssertTrue(app.staticTexts["username"].exists)
+        
+       // Нажать кнопку логаута
+        app.buttons["LogoutButton"].tap()
+        sleep(3)
+        print(app.debugDescription)
+        app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Выхожу точно"].tap()
+        
+        sleep(5)
+       // Проверить, что открылся экран авторизации
+        print(app.debugDescription)
+        XCTAssertTrue(app.buttons["Authenticate"].waitForExistence(timeout: 5))
+        
     }
 }
