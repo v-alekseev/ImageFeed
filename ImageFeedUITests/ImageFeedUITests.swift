@@ -55,26 +55,7 @@ class ImageFeedUITests: XCTestCase {
         
     }
     
-    func testFeed2() throws {
-        
-        // Подождать, пока открывается экран ленты
-        let tablesQuery = app.tables
-        //let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
-        let cell = tablesQuery.cells.element(boundBy: 0)
-        XCTAssertTrue(cell.waitForExistence(timeout: 10))
-        
-        sleep(1)
-//        // Сделать жест «смахивания» вверх по экрану для его скролла
-        cell.swipeUp()
-        //sleep(1)
-
-        //let likeCell = tablesQuery.children(matching: .cell).element(boundBy: 1)
-//        let likeCell = tablesQuery.cells.element(boundBy: 0)
-//        print(app.debugDescription)
-//        XCTAssertTrue(likeCell.waitForExistence(timeout: 10))
-        //likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-        //sleep(2)
-    }
+ 
     
     func testFeed() throws {
         // тестируем сценарий ленты
@@ -93,7 +74,7 @@ class ImageFeedUITests: XCTestCase {
         let likeCell = tablesQuery.children(matching: .cell).element(boundBy: 1)
         //print(app.debugDescription)
         //XCTAssertTrue(likeCell.waitForExistence(timeout: 10))
-        likeCell/*@START_MENU_TOKEN@*/.buttons["LikeButton"]/*[[".buttons[\"favorits active\"]",".buttons[\"LikeButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        likeCell.buttons["LikeButton"].tap()
         sleep(2)
 //
         //print(app.debugDescription)
