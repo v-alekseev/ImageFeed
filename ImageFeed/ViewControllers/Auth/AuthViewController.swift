@@ -16,7 +16,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     private let ShowWebView: String = "ShowWebView"
-    private var oAuth2TokenStorage = OAuth2TokenStorage()
+    private var oAuth2TokenStorage = OAuthTokenStorage()
     weak var delegate: AuthViewControllerDelegate? 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -24,6 +24,10 @@ final class AuthViewController: UIViewController {
             // Переходим на ViewController для открытия WebView авторизации
             let destinationViewController = segue.destination as! WebViewViewController
             destinationViewController.webViewDelegate = self  // WebViewViewControllerDelegate
+            
+            let webViewPresenter = WebViewPresenter(authHelper: AuthHelper())
+            destinationViewController.presenter = webViewPresenter
+            webViewPresenter.view = destinationViewController
             
         } else {
             super.prepare(for: segue, sender: sender)

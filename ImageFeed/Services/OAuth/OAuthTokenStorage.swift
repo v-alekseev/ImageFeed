@@ -9,7 +9,7 @@ import SwiftKeychainWrapper
 
 import Foundation
 
-final class OAuth2TokenStorage {
+final class OAuthTokenStorage {
     
     var token: String? {
         

@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ProgressHUD.animationType = .systemActivityIndicator
         ProgressHUD.colorHUD = .black
         ProgressHUD.colorAnimation = .lightGray
-        print("IMG didFinishLaunchingWithOptions")
         return true
     }
     

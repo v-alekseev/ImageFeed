@@ -7,9 +7,16 @@
 
 import Foundation
 
-class ImagesListService {
+public protocol ImagesListServiceProtocol {
+    var photos: [Photo] { get set }
     
-    private (set) var photos: [Photo] = []
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<String, Error>) -> Void)
+}
+
+class ImagesListService: ImagesListServiceProtocol {
+    
+    var photos: [Photo] = []
     
     private var lastLoadedPage: Int = 0
     private var nextPage: Int  {
@@ -23,11 +30,11 @@ class ImagesListService {
     private let networkClient = NetworkClient()
     private var taskPagination: URLSessionDataTask?
     private var taskChangeLike: URLSessionDataTask?
-    private let oAuth2TokenStorage = OAuth2TokenStorage()
+    private let oAuthTokenStorage = OAuthTokenStorage()
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<String, Error>) -> Void) {
         taskChangeLike?.cancel() // если уже идет загрузка, прерываем ee
-        guard let token = oAuth2TokenStorage.token else { return }
+        guard let token = oAuthTokenStorage.token else { return }
         
         // подготавливаем запрос для получения ссылки на аватар https://api.unsplash.com/photos
         guard let photoLikeRequest = createLikeRequest(with: token, photoId: photoId, like: isLike) else { return }
@@ -60,7 +67,7 @@ class ImagesListService {
         
         if taskPagination != nil { return } // если уже идет загрузка, ее не прерываем
    
-        guard let token = oAuth2TokenStorage.token else { return }
+        guard let token = oAuthTokenStorage.token else { return }
         
         // подготавливаем запрос для получения ссылки на аватар https://api.unsplash.com/photos
         guard let photosListRequest = createGetImagesListRequest(with: token) else { return }
@@ -95,7 +102,7 @@ class ImagesListService {
     
     private func createGetImagesListRequest(with  token: String) -> URLRequest? {
         // GET /photos
-        let UnsplashAuthorizeURLString = "https://api.unsplash.com/photos"
+        let UnsplashAuthorizeURLString = Consts.DefaultAPIURL.absoluteString + "/photos"
         
         guard var urlComponents =  URLComponents(string: UnsplashAuthorizeURLString) else { return nil}
     
@@ -115,7 +122,8 @@ class ImagesListService {
     
     // подготавливаем запрос для  установки/снятия like https://api.unsplash.com/photos/\(photoId)/like (likr = true, set like, false delete like)
     private func createLikeRequest(with token: String, photoId: String, like: Bool)  -> URLRequest? {
-        let UnsplashAuthorizeURLString = "https://api.unsplash.com/photos/\(photoId)/like"
+        
+        let UnsplashAuthorizeURLString = Consts.DefaultAPIURL.absoluteString + "/photos/\(photoId)/like"
         
         guard let url = URL(string: UnsplashAuthorizeURLString) else { return nil}
         

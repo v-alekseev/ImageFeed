@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-class Photo {
+public class Photo {
     
     private (set) var id: String
     private (set) var size: CGSize
@@ -17,6 +17,7 @@ class Photo {
     private (set) var thumbImageURL: URL
     private (set) var largeImageURL: URL
     private (set) var isLiked: Bool
+    // private (set) 
     
     init(_ data: PhotoResult) {
         self.id = data.id

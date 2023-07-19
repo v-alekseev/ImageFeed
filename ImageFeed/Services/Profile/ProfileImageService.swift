@@ -17,7 +17,7 @@ final class ProfileImageService {
     private let networkClient = NetworkClient()
     private var task: URLSessionDataTask?
     private var profile = Profile.shared
-    private let oAuth2TokenStorage = OAuth2TokenStorage()
+    private let oAuthTokenStorage = OAuthTokenStorage()
     
     
     private init() {
@@ -28,7 +28,7 @@ final class ProfileImageService {
         
         task?.cancel() // защита от повторного вызова функции fetchProfileImageURL
         
-        guard let token = oAuth2TokenStorage.token else { return }
+        guard let token = oAuthTokenStorage.token else { return }
         
         // подготавливаем запрос для получения ссылки на аватар https://api.unsplash.com/users/
         guard let userInfoRequest = createGetUserRequest(with: token, user: profile.username) else { return }
@@ -56,7 +56,7 @@ final class ProfileImageService {
     
     private func createGetUserRequest(with  token: String, user: String) -> URLRequest? {
         // GET /users/:username
-        let UnsplashAuthorizeURLString = "https://api.unsplash.com/users/" + user
+        let UnsplashAuthorizeURLString = Consts.DefaultAPIURL.absoluteString + "/users/" + user
         guard let url = URL(string: UnsplashAuthorizeURLString) else { return nil}
         var request = URLRequest(url: url)
         request.setValue("Bearer " + token, forHTTPHeaderField:"Authorization")

@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="245" id="dWa-pm-YYi" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="245" id="dWa-pm-YYi" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="414" height="245"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dWa-pm-YYi" id="3j9-LE-yVd">
@@ -41,6 +41,7 @@
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOE-bB-X4E" userLabel="LikeButtom">
                                                     <rect key="frame" x="354" y="4" width="44" height="31"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="LikeButton"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="FGb-1F-VIS"/>
                                                         <constraint firstAttribute="width" constant="44" id="uyM-B2-Htv"/>
@@ -88,6 +89,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
+                        <accessibility key="accessibilityConfiguration" identifier="ImageListView"/>
                         <constraints>
                             <constraint firstItem="sXN-U4-YkU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="53a-05-pGS"/>
                             <constraint firstAttribute="bottom" secondItem="sXN-U4-YkU" secondAttribute="bottom" id="8BA-Uu-lKr"/>
@@ -123,6 +125,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ZE-7O-iL6" userLabel="Login">
                                 <rect key="frame" x="16" y="724" width="382" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="sek-KO-WiH"/>
                                 </constraints>
@@ -143,6 +146,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="k9k-6T-3PW"/>
                         <color key="backgroundColor" name="YP Black"/>
+                        <accessibility key="accessibilityConfiguration" identifier="AuthViewController"/>
                         <constraints>
                             <constraint firstItem="5ZE-7O-iL6" firstAttribute="centerX" secondItem="hyn-fJ-RMg" secondAttribute="centerX" id="1Tk-YN-8It"/>
                             <constraint firstAttribute="bottom" secondItem="5ZE-7O-iL6" secondAttribute="bottom" constant="124" id="5JV-zk-rZn"/>
@@ -160,7 +164,7 @@
         <!--Web View View Controller-->
         <scene sceneID="iTa-4U-0If">
             <objects>
-                <viewController id="M5D-p3-emb" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="M5D-p3-emb" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iev-se-5se">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -264,6 +268,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9SD-4Y-OKS" userLabel="returnButton">
                                 <rect key="frame" x="0.0" y="46" width="44" height="44"/>
+                                <accessibility key="accessibilityConfiguration" identifier="BackToImageListButton"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="PBC-DQ-c7t"/>
                                     <constraint firstAttribute="height" constant="44" id="v47-dU-UMl"/>

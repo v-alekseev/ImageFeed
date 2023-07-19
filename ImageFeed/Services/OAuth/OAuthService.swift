@@ -7,7 +7,7 @@
 
 import Foundation
 
-class OAuth2Service {
+class OAuthService {
     // Кажется его нужно сделать Singleton раз мы тут проверяем code и task // хотя может быть проблема с тем что вызвали из разных потоков. Надо подумать
     //    static let shared = TestSinglton()
     //    private init() {
@@ -46,7 +46,7 @@ class OAuth2Service {
     
     private func createAuthUrl(code: String) -> URLRequest? {
         
-        let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/token"
+        let UnsplashAuthorizeURLString = Consts.DefaultBaseURL.absoluteString + "/oauth/token"
         
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
         urlComponents.queryItems = [
@@ -62,20 +62,20 @@ class OAuth2Service {
         return URLRequest(url: url)
     }
     
-    func createCodeRequestURL() -> URLRequest? {
-        let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-        
-        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Consts.AccessKey),
-            URLQueryItem(name: "redirect_uri", value: Consts.RedirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Consts.AccessScope)
-        ]
-        
-        guard let url = urlComponents.url else { return nil}
-        
-        return URLRequest(url: url)
-    }
+//    func createCodeRequestURL() -> URLRequest? {
+//        //let UnsplashAuthorizeURLString = Consts.DefaultBaseURL.absoluteString + "/oauth/authorize"
+//        
+//        var urlComponents = URLComponents(string: Consts.UnsplashAuthorizeURLString)!
+//        urlComponents.queryItems = [
+//            URLQueryItem(name: "client_id", value: Consts.AccessKey),
+//            URLQueryItem(name: "redirect_uri", value: Consts.RedirectURI),
+//            URLQueryItem(name: "response_type", value: "code"),
+//            URLQueryItem(name: "scope", value: Consts.AccessScope)
+//        ]
+//        
+//        guard let url = urlComponents.url else { return nil}
+//        
+//        return URLRequest(url: url)
+//    }
 }
 

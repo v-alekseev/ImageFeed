@@ -17,7 +17,7 @@ final class ImagesListCell: UITableViewCell {
     static let favoritsNoactive = "favorits_noactive"
     static let defaultHeight = CGFloat(300)
     
-    public var indexPath: IndexPath?  // TODO
+    public var indexPath: IndexPath?
     
     
     weak var delegate: ImagesListCellDelegate?
@@ -29,13 +29,12 @@ final class ImagesListCell: UITableViewCell {
     
     override func prepareForReuse() {
          super.prepareForReuse()
-        //print("IMG prepareForReuse() (\(row))")
+
          // Отменяем загрузку, чтобы избежать багов при переиспользовании ячеек
         imageCellList.kf.cancelDownloadTask()
      }
 
     @IBAction func likeButtonPressed(_ sender: Any) {
-        print("IMG ImagesListCell likeButtonPressed")
         delegate?.imageListCellDidTapLike(self)
     }
     

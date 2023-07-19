@@ -8,10 +8,27 @@
 import Foundation
 import UIKit
 import Kingfisher
-import WebKit
 
 
-final class ProfileViewController: UIViewController {
+
+// выносим в презентер
+// 1 - очистка токена self.oAuthTokenStorage.token = nil
+//     очистка данных браузера private func cleanWebData() {
+// 2 - Загрузка картинки profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
+// 3 - profile  private var profile = Profile.shared  перенести в presenter
+//
+// тесты
+// 1 - вызывется clearSessionData()
+// 2 - вызывается обновление картинки
+
+
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateProfileDetails()
+    func updateAvatar()
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     private var exitButton: UIButton?
     private var profileImageView: UIImageView?
@@ -19,11 +36,11 @@ final class ProfileViewController: UIViewController {
     private var idLabel: UILabel?
     private var descriptionLabel: UILabel?
     
+    var presenter: ProfilePresenterProtocol?
     
-    private var oAuth2TokenStorage = OAuth2TokenStorage()
     private var profile = Profile.shared
     
-    private var animationLayers = Set<CALayer>()
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     
     @IBAction private func buttonExitTapped(_ sender: UIButton) {
@@ -31,31 +48,17 @@ final class ProfileViewController: UIViewController {
         let alert = UIAlertController(title: "Пока, пока!", message: "Вы уверены что хотите выйти?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Выхожу точно", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            // тут так же чистим и keychain
-            self.oAuth2TokenStorage.token = nil
-            // Очишаем куки и другие данные сессии
-            self.cleanWebData()
+            // очищаем токен и сессионные данные
+            self.presenter?.clearSessionData()
             // Переключаемся на SplashScreen
             self.switchToSplashScreen()
             
             self.dismiss(animated: true)
         })
-        alert.addAction(UIAlertAction(title: "Пожалуй останусь", style: .default))
+        alert.addAction(UIAlertAction(title: "Я, пожалуй, останусь", style: .default))
         
         self.present(alert, animated: true)
         
-    }
-    
-    private func cleanWebData() {
-        // Очищаем все куки из хранилища.
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        // Запрашиваем все данные из локального хранилища.
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            // Массив полученных записей удаляем из хранилища.
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
     }
     
     private func switchToSplashScreen() {
@@ -64,7 +67,11 @@ final class ProfileViewController: UIViewController {
         window.makeKeyAndVisible()
     }
     
-    private var profileImageServiceObserver: NSObjectProtocol?
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,27 +84,19 @@ final class ProfileViewController: UIViewController {
         idLabel = addIdlabel()
         descriptionLabel = addDescriptionlabel()
         
-        // Обновлнени еданных на экране
-        self.updateProfileDetails(profile: profile)
-        
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.DidChangeNotification,
                 object: nil,
                 queue: .main
             ) { [weak self] pr in
-                print("IMG pr = \(pr)")
                 guard let self = self else { return }
-                self.updateAvatar()
+                self.presenter?.didUpdateAvatar()
             }
-        
-        self.updateAvatar()
-        
+        presenter?.viewDidLoad()
     }
     
-    
-    
-    private func updateAvatar() { 
+    func updateAvatar() {
         guard
             let profileImageURL = profile.avatarURL,
             let url = URL(string: profileImageURL)
@@ -105,10 +104,9 @@ final class ProfileViewController: UIViewController {
         
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
-        
     }
     
-    private func updateProfileDetails(profile: Profile){
+    func updateProfileDetails() {
         nameLabel?.text = profile.name
         idLabel?.text = profile.loginName
         descriptionLabel?.text = profile.bio
@@ -142,7 +140,7 @@ extension ProfileViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "exit"), for: .normal)
         button.addTarget(self, action: #selector(self.buttonExitTapped), for: .touchUpInside)
-        
+        button.accessibilityIdentifier = "LogoutButton"
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .ypRed
         view.addSubview(button)
@@ -161,6 +159,7 @@ extension ProfileViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Екатерина Новикова"
         label.textColor = .ypWhite
+        label.accessibilityIdentifier = "NameLastname"
         label.font = UIFont.boldSystemFont(ofSize: 23.0)
         view.addSubview(label)
         label.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8).isActive = true
@@ -177,6 +176,7 @@ extension ProfileViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "@ekaterina_nov"
+        label.accessibilityIdentifier = "username"
         label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 13.0)
         view.addSubview(label)
