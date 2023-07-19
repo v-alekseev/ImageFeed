@@ -30,11 +30,11 @@ class ImagesListService: ImagesListServiceProtocol {
     private let networkClient = NetworkClient()
     private var taskPagination: URLSessionDataTask?
     private var taskChangeLike: URLSessionDataTask?
-    private let oAuth2TokenStorage = OAuth2TokenStorage()
+    private let oAuthTokenStorage = OAuthTokenStorage()
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<String, Error>) -> Void) {
         taskChangeLike?.cancel() // если уже идет загрузка, прерываем ee
-        guard let token = oAuth2TokenStorage.token else { return }
+        guard let token = oAuthTokenStorage.token else { return }
         
         // подготавливаем запрос для получения ссылки на аватар https://api.unsplash.com/photos
         guard let photoLikeRequest = createLikeRequest(with: token, photoId: photoId, like: isLike) else { return }
@@ -67,7 +67,7 @@ class ImagesListService: ImagesListServiceProtocol {
         
         if taskPagination != nil { return } // если уже идет загрузка, ее не прерываем
    
-        guard let token = oAuth2TokenStorage.token else { return }
+        guard let token = oAuthTokenStorage.token else { return }
         
         // подготавливаем запрос для получения ссылки на аватар https://api.unsplash.com/photos
         guard let photosListRequest = createGetImagesListRequest(with: token) else { return }

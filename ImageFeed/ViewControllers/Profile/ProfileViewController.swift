@@ -12,7 +12,7 @@ import Kingfisher
 
 
 // выносим в презентер
-// 1 - очистка токена self.oAuth2TokenStorage.token = nil
+// 1 - очистка токена self.oAuthTokenStorage.token = nil
 //     очистка данных браузера private func cleanWebData() {
 // 2 - Загрузка картинки profileImageView?.kf.setImage(with: url, options: [.processor(processor)])
 // 3 - profile  private var profile = Profile.shared  перенести в presenter

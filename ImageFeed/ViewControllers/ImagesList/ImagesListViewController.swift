@@ -83,10 +83,12 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     }()
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowSingleImageSegueIdentifier {
-            let destinationViewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
-            destinationViewController.imageUrl = presenter?.photo(indexPath.row).largeImageURL//imageListService.photos[indexPath.row].largeImageURL
+        if segue.identifier == ShowSingleImageSegueIdentifier,
+            let destinationViewController = segue.destination as? SingleImageViewController,
+            let indexPath = sender as? IndexPath {
+//            let destinationViewController = segue.destination as! SingleImageViewController
+//            let indexPath = sender as! IndexPath
+            destinationViewController.imageUrl = presenter?.photo(indexPath.row).largeImageURL
         } else {
             super.prepare(for: segue, sender: sender)
         }

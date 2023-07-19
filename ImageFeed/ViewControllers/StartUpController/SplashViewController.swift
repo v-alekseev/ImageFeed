@@ -15,8 +15,8 @@ final class SplashViewController: UIViewController {
     private let ShowImageListViewSegueIdentifier = "ShowImageListView"
     private let ShowAuthViewSegueIdentifier = "ShowAuthView"
     
-    private let oAuth2TokenStorage = OAuth2TokenStorage()
-    private let oAuth2Service = OAuth2Service()
+    private let oAuthTokenStorage = OAuthTokenStorage()
+    private let oAuthService = OAuthService()
     
     private let profileService = ProfileService()
     
@@ -34,10 +34,10 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        print("IMG Token = \(String(describing: oAuth2TokenStorage.token))")
+        print("IMG Token = \(String(describing: oAuthTokenStorage.token))")
         
         // Если токен получали ранее, то переходим в библиотеку изображений. Если нет, то на экран авторизации
-        if let token = oAuth2TokenStorage.token {
+        if let token = oAuthTokenStorage.token {
             
             self.fetchProfile(token: token)  // грузим profile и переходим к ленте
         } else {
@@ -72,13 +72,13 @@ final class SplashViewController: UIViewController {
     
     private func fetchAuthToken(code: String) {
         
-        oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
+        oAuthService.fetchAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let token):
                 // Сохраним токен в UserDefaults
-                self.oAuth2TokenStorage.token = token
+                self.oAuthTokenStorage.token = token
                 print("IMG \(#file)-\(#function)(\(#line)) token = \(token)")
                 
                 self.fetchProfile(token: token)
@@ -87,7 +87,7 @@ final class SplashViewController: UIViewController {
                 UIBlockingProgressHUD.dismiss()
                 // TODO почему-то алерт не показывается и надо уходить на SplashScreen опять
                 print("IMG \(#file)-\(#function)(\(#line)) Error = \(error)")
-                self.oAuth2TokenStorage.token = nil // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
+                self.oAuthTokenStorage.token = nil // нужно обнулять. если токен отзовут, мы никогда не сможем попасть обратно на экран авторизации
                 self.showErrorAlert()
             }
         }

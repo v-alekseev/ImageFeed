@@ -7,7 +7,7 @@
 
 import Foundation
 
-class OAuth2Service {
+class OAuthService {
     // Кажется его нужно сделать Singleton раз мы тут проверяем code и task // хотя может быть проблема с тем что вызвали из разных потоков. Надо подумать
     //    static let shared = TestSinglton()
     //    private init() {

@@ -17,7 +17,6 @@ public protocol WebViewPresenterProtocol: AnyObject{
 
 final class WebViewPresenter: WebViewPresenterProtocol {
     weak var view: WebViewViewControllerProtocol?
-    //private var oAuth2Service = OAuth2Service()
     
     var authHelper: AuthHelperProtocol
         
@@ -26,7 +25,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     }
     
     func viewDidLoad() {
-        guard let request = authHelper.authRequest()  else { return }   //oAuth2Service.createCodeRequestURL() else { return }
+        guard let request = authHelper.authRequest()  else { return } 
         view?.load(request: request)
         didUpdateProgressValue(0) // set progressbar to 0 position
     }

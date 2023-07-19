@@ -20,7 +20,7 @@ public protocol ProfilePresenterProtocol: AnyObject{
 final class ProfilePresenter: ProfilePresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
     
-    private var oAuth2TokenStorage = OAuth2TokenStorage()
+    private var oAuth2TokenStorage = OAuthTokenStorage()
     
     func clearSessionData() {
         //  чистим keychain

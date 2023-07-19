@@ -35,6 +35,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     private var estimatedProgressObservation: NSKeyValueObservation?
     
     @IBAction func didTapBackButton2(_ sender: UIButton) {
+        // TODO перенести в делегат
         webViewDelegate?.webViewViewControllerDidCancel(self)
     }
     
@@ -50,7 +51,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
              changeHandler: { [weak self] _, _ in
                  guard let self = self,
                        let presenter = self.presenter else { return }
-                 //self.updateProgress()
                 presenter.didUpdateProgressValue(self.webView.estimatedProgress)
              })
         
@@ -64,13 +64,13 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     
     
     func setProgressValue(_ newValue: Float) {
-        progressView.progress = newValue
+        //progressView.progress = newValue
+        progressView.setProgress(newValue, animated: true)
     }
 
     func setProgressHidden(_ isHidden: Bool) {
         progressView.isHidden = isHidden
     }
-    
     
 }
 

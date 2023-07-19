@@ -60,7 +60,7 @@ class ProfileViewTests: XCTestCase {
     func testPresenterClearSessionData() {
         //given
       //  let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let oAuth2TokenStorage = OAuth2TokenStorage()
+        let oAuth2TokenStorage = OAuthTokenStorage()
         let viewController = ProfileViewControllerSpy() //storyboard.instantiateViewController(withIdentifier: "WebViewViewController") as! WebViewViewController
         let presenter = ProfilePresenter()
         viewController.presenter = presenter
@@ -80,7 +80,7 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
     var viewDidLoadCalled: Bool = false
     
-    private var oAuth2TokenStorage = OAuth2TokenStorage()
+    private var oAuth2TokenStorage = OAuthTokenStorage()
     
     func clearSessionData() {
     }
