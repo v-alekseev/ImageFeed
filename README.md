@@ -3,7 +3,7 @@
 Приложение было написано в рамках учебного курса "iOS-разработчик" от Яндекс Практикум.
 
 ## Стек
-- вёрстка на сторибордах и вёрстка кодом с Auto Layout
+- вёрстка на сторибордах и вёрстка кодом с Auto Layout. [Дизайн](https://www.figma.com/file/HyDfKh5UVPOhPZIhBqIm3q/Image-Feed-(YP)?node-id=318-1469) в Figma.
 - UITableView, UIScrollView
 - URLSession и пагинация запросов
 - многопоточность; предотвращение race condition (DispatchQueue, блокировка UI)
