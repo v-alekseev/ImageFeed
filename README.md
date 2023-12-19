@@ -27,8 +27,7 @@
 - У пользователя есть профиль с избранными изображениями и краткой информацией о пользователе.
 - У приложения есть две версии: расширенная и базовая. В расширенной версии добавляется механика избранного и возможность лайкать фотографии при просмотре изображения на весь экран.
 
-<img width="300" height="660" alt="image" src="https://github.com/v-alekseev/ImageFeed/blob/main/ImageFeed/Assets.xcassets/Images/Screenshots/image.imageset/2023-12-19_13-55-43.png">
-<img width="300" height="660" alt="list" src="https://github.com/v-alekseev/ImageFeed/blob/main/ImageFeed/Assets.xcassets/Images/Screenshots/list.imageset/2023-12-19_13-54-56.png">
+<img width="300" height="660" alt="image" src="https://github.com/v-alekseev/ImageFeed/blob/main/ImageFeed/Assets.xcassets/Images/Screenshots/image.imageset/2023-12-19_13-55-43.png"><img width="300" height="660" alt="list" src="https://github.com/v-alekseev/ImageFeed/blob/main/ImageFeed/Assets.xcassets/Images/Screenshots/list.imageset/2023-12-19_13-54-56.png">
 
 
 ### Авторизация через OAuth
